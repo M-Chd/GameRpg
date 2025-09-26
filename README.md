@@ -77,7 +77,7 @@ The main project's folder is like this:
 
 ## The game in prototype on terminal in June 2025:
 
-<img width="949" height="859" alt="image" src="https://github.com/user-attachments/assets/84f89b0d-8a0f-4a3c-b284-c1688cd07e4f" />on
+<img width="949" height="859" alt="image" src="https://github.com/user-attachments/assets/84f89b0d-8a0f-4a3c-b284-c1688cd07e4f" />
 
 ## How the game looked with the inclusion of SDL2 in June 22th 2025: 
 
