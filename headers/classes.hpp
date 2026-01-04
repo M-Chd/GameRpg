@@ -6,6 +6,8 @@
 #include <string>
 #include "entity.hpp"
 
+#define MAX_INV_SIZE 5
+
 /**
  * @class Item
  * @brief represent an item.
@@ -29,7 +31,6 @@ public:
 class Inventory {
 private:
     std::vector<std::shared_ptr<Item>> items;
-    static constexpr size_t MAX_INV_SIZE = 5; // maximum size of the inventory.
 public:
     Inventory();
     bool addItem(std::shared_ptr<Item> item);

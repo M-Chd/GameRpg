@@ -32,7 +32,7 @@ public:
     void DeleteEntity(Position pos);
 
     std::shared_ptr<Entity> getEntityAt(Position pos) const;
-    EntityType getEntityType(Position pos) const;
+    EntityType getEntityTypeAt(Position pos) const;
     std::unordered_map<Position,std::shared_ptr<Entity>> getEntities() const;
     std::vector<std::pair<Position, std::shared_ptr<Entity>>> getEnemiesInBoard() const;
     std::vector<std::pair<Position, std::shared_ptr<Entity>>> getHealInBoard() const;

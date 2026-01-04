@@ -34,7 +34,6 @@ public:
     void setMobName(const std::string& newName);
     virtual std::string getClassName() const override;
     Stats& getStats();
-    const Stats& getStats() const;
     void attackPlayer(std::shared_ptr<Player> player);
     Enemystate getCurrentState() const;
     void setPatrol();

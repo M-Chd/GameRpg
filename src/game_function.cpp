@@ -125,7 +125,7 @@ void MoveDirection(std::shared_ptr<Entity> entity,
 		}
 		if (dynamic_cast<Heal*>(target)){
 			HealPlayerOnItem(player,board,targetPos);
-		} else if (board.getEntityType(targetPos) == EntityType::ITEM) {
+		} else if (board.getEntityTypeAt(targetPos) == EntityType::ITEM) {
 			CollectItem(player,board,targetPos);
 		} else if (isMobAt(targetPos,board)){
 			auto mob = std::dynamic_pointer_cast<Mob>(board.getEntityAt(targetPos));
@@ -137,7 +137,7 @@ void MoveDirection(std::shared_ptr<Entity> entity,
 		if (!board.isWalkable(targetPos)){
 			return;
 		}
-		if (board.getEntityType(targetPos) == EntityType::PLAYER) {
+		if (board.getEntityTypeAt(targetPos) == EntityType::PLAYER) {
             auto player = std::dynamic_pointer_cast<Player>(board.getEntityAt(targetPos));
             auto mob = std::dynamic_pointer_cast<Mob>(entity);
             StartFight(board, player, mob, renderer, font, playerTexture, mobTexture);
@@ -230,7 +230,7 @@ Mob* getNearMob(Player* player, Board& board) {
  * @return True if an enemy is at the position, false if not.
  */
 bool isMobAt(Position pos, Board& board){
-	if (board.getEntityType(pos) == EntityType::MOB){
+	if (board.getEntityTypeAt(pos) == EntityType::MOB){
 		return true;
 	}
 	return false;

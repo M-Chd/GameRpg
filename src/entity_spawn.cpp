@@ -18,12 +18,12 @@ Position generateRandomPosition(int boardSize, Board& board) { //this is more op
     int x = distr(eng);
     int y = distr(eng);
 
-    if (board.getEntityType(Position(x,y)) == EntityType::PLAYER) {
+    if (board.getEntityTypeAt(Position(x,y)) == EntityType::PLAYER) {
         // Use a loop instead of recursion to avoid ambiguity and stack overflow
         do {
             x = distr(eng);
             y = distr(eng);
-        } while (board.getEntityType(Position(x,y)) == EntityType::PLAYER);
+        } while (board.getEntityTypeAt(Position(x,y)) == EntityType::PLAYER);
     }
     return Position(x,y);
 }
@@ -43,11 +43,11 @@ Position generateRandomItemPosition(int boardsize, Board& board) {
     std::uniform_int_distribution<> distr(0, boardsize - 1);
     int x = distr(eng);
     int y = distr(eng);
-    if (board.getEntityType(Position(x,y)) != EntityType::VOID) {
+    if (board.getEntityTypeAt(Position(x,y)) != EntityType::VOID) {
         do {
             x = distr(eng);
             y = distr(eng);
-        } while (board.getEntityType(Position(x,y)) != EntityType::VOID);
+        } while (board.getEntityTypeAt(Position(x,y)) != EntityType::VOID);
     }
     
     return Position(x,y);

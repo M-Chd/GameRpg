@@ -150,7 +150,7 @@ std::vector<std::pair<Position, std::shared_ptr<Entity>>> Board::getHealInBoard(
  * 
  * @return the Entitytype of the entity at the position given.
  */
-EntityType Board::getEntityType(Position pos) const {
+EntityType Board::getEntityTypeAt(Position pos) const {
     
     auto it = entities.find(pos);
     if (it != entities.end() && it->second){
@@ -167,7 +167,7 @@ EntityType Board::getEntityType(Position pos) const {
  * @return True if yes, false if not.
  */
 bool Board::isWalkable(Position pos){
-    if (getEntityType(pos) != EntityType::VOID && getEntityType(pos) != EntityType::PLAYER){
+    if (getEntityTypeAt(pos) != EntityType::VOID && getEntityTypeAt(pos) != EntityType::PLAYER){
         return false;
     }
     return true;
@@ -225,7 +225,7 @@ void Board::DrawBoard(SDL_Renderer* renderer,
                 continue;
             }
 
-            switch (getEntityType(pos)) {
+            switch (getEntityTypeAt(pos)) {
             case EntityType::PLAYER:
                 if (PlayerTexture) {
                     SDL_RenderCopy(renderer, PlayerTexture, nullptr, &cell);
