@@ -12,6 +12,8 @@ class Mob;
  */
 class Player : public Entity {
 private:
+    SDL_Texture* Player_Texture;
+    SDL_Surface* PlayerSurface = nullptr;
     Stats stats;
     Inventory inventory;
     bool isProtecting = false; // indicate if the player is protecting or not. At default false.

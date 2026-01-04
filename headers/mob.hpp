@@ -24,9 +24,9 @@ enum class Enemystate {
  */
 class Mob : public Entity, public std::enable_shared_from_this<Mob> {
 private:
-    std::string mobname;
+    std::string name;
     Stats stats;
-    Inventory inventory;
+    //Inventory inventory;
     Enemystate currentState; // the current state of the enemy.
 public:
     Mob(const std::string& name,Stats stats,Position pos);

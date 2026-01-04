@@ -7,9 +7,8 @@
  * @param Stats the statistics of the enemy (hp, attack, defense).
  * @param pos the position of the enemy on the board.
  */
-Mob::Mob(const std::string& name,Stats Stats,Position pos) : Entity(EntityType::MOB,Stats.hp,Stats.attack,pos), mobname(name),
-    stats(Stats),
-    inventory() {}
+Mob::Mob(const std::string& name,Stats Stats,Position pos) : Entity(EntityType::MOB,Stats.hp,Stats.attack,pos), name(name),
+    stats(Stats){}
 
 /**
  * @brief Getter for the Class name used for recognizing the entity.
@@ -21,13 +20,13 @@ std::string Mob::getClassName() const { return "Mob"; }
  * @brief Getter for the enemy's name.
  * @return name of the enemy.
  */
-std::string Mob::getMobName() const { return mobname; }
+std::string Mob::getMobName() const { return name; }
 
 /**
  * @brief Setter for the enemy's name.
  * @param newName the new name of the enemy.
  */
-void Mob::setMobName(const std::string& newName) { mobname = newName; }
+void Mob::setMobName(const std::string& newName) { name = newName; }
 
 /**
  * @brief Getter for the enemy's statistics.
