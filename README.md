@@ -65,10 +65,17 @@ The main project's folder is like this:
 
 ***
 ## On Windows 10/11.
-* Double click on the .exe file. It should launch the game.
+* Double click on the .exe file. It should launch the game. If it doesn't work, compile it by yourself using gcc and the .dll files of the library SDL2. Use MINGW64 and write **make**. Then write **./gameRpg_Win.exe** and launch the game.
 
 ## On Linux.
-* I would probably do a separate build for Linux. TODO
+
+```
+sudo apt install libsdl2-image-dev libsdl2-ttf-dev libsdl2-dev
+mkdir build && cd build
+cmake ..
+make -j6
+./GameRpg
+```
 
 ***
 # 5. History of the project
@@ -77,7 +84,7 @@ The main project's folder is like this:
 
 ## The game in prototype on terminal in June 2025:
 
-<img width="949" height="859" alt="image" src="https://github.com/user-attachments/assets/84f89b0d-8a0f-4a3c-b284-c1688cd07e4f" />on
+<img width="949" height="859" alt="image" src="https://github.com/user-attachments/assets/84f89b0d-8a0f-4a3c-b284-c1688cd07e4f" />
 
 ## How the game looked with the inclusion of SDL2 in June 22th 2025: 
 
