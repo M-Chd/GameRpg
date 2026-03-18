@@ -2,7 +2,7 @@
 
 namespace Entities {
 
-    struct Stats
+    class Stats
     {
         int healthPoint;
         int attackPoint;
@@ -18,7 +18,6 @@ namespace Entities {
         void checkLvlUp();
         void gainXp(int amount);
         int getXpToNxtLvl();
-
 
     };
 }

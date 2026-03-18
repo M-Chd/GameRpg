@@ -14,13 +14,19 @@ namespace Entities{
     {
     public:
         
-        Enemy(const std::string _name,Stats _stats,Utils::Position _pos) : 
-        name(_name), stats(_stats), pos(_pos)
-        {}
+        Enemy(const std::string _name,Stats _stats,Utils::Position _pos) : stats(_stats)
+        {
+            name = _name;
+            pos = _pos;
+        }
 
-        std::string getName() const;
-        Utils::Position getPos() const;
-        EnemeyState getState() const;
+        EnemeyState getState() { return state; };
+        const Stats& getStats() { return stats; }
+        
+        const Utils::Position& getPos() override { return pos; };
+        void setPos(Utils::Position p) override;
+        const std::string& getName() override { return name; };
+        const EntityType getType()override{ return type; };
         
         void attack(std::shared_ptr<Player> e);
         void chase();
@@ -31,12 +37,8 @@ namespace Entities{
         virtual void update() override;
         virtual void render(SDL_Renderer* renderer) override;
 
-
-
     private:
-        std::string name;
         Stats stats;
         EnemeyState state;
-        Utils::Position pos;
     };
 }
