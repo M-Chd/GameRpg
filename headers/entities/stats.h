@@ -2,9 +2,8 @@
 
 namespace Entities {
 
-    class Stats
+    struct Stats
     {
-    public:
         int healthPoint;
         int attackPoint;
         int defensePoint;
@@ -14,8 +13,7 @@ namespace Entities {
 
         Stats(int _hp,int _attack,int _defense = 2) : healthPoint(_hp), attackPoint(_attack),
             defensePoint(_defense){}
-
-    private:
+            
         void checkLvlUp();
         void gainXp(int amount);
         int getXpToNxtLvl();
