@@ -20,11 +20,26 @@ void Systems::Inventory::addItem(std::shared_ptr<Entities::Item> item)
     if (!item)
         std::cerr << "Item is null" << std::endl;
 
-    if (items.size() >= this->getMaxSize())
+    if (items.size() >= InventorySize)
     {
         std::cout << "Inventory is full !" << "\n";
         return;
     }
     
     items.push_back(item);
+}
+
+void Systems::Inventory::removeItem(const std::string& name)
+{
+    for (auto it = items.begin(); it != items.end(); ++it) {
+        if ((*it)->getName() == name) {
+            items.erase(it);
+            return;
+        }
+    }
+}
+
+void Systems::Inventory::pop()
+{
+    if (!items.empty()) items.pop_back();
 }
