@@ -1,9 +1,30 @@
 #pragma once
+#include <iostream>
+#include "entities/player.h"
+#include "board.h"
+#include "gamestate.h"
+#include "textureManager.h"
+#include "window.h"
+#include "entities/swordItem.h"
+#include "utils/util.h"
 
 namespace Core {
 
     struct Game
     {
-        
-    }
+        Board board;
+        std::shared_ptr<Entities::Player> player;
+
+        TextureManager textureManager;
+        WindowRenderer WindowRenderer;
+
+        GameState state;
+        Uint32 lastEnemyUpdate = 0;
+        const Uint32 enemyUpdateInterval = 800;
+
+        void initGame();
+        void initEntities();
+        void run();
+        void quit();
+    };
 }

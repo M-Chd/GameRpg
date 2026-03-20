@@ -13,6 +13,7 @@ namespace Entities{
         
         Player(Utils::Position _pos, Stats _stats) : stats(_stats)
         {
+            this->stats.xp = 30;
             name = "Player";
             pos = _pos;
         };

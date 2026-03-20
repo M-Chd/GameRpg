@@ -4,6 +4,7 @@ namespace Entities {
 
     class Stats
     {
+    public:
         int healthPoint;
         int attackPoint;
         int defensePoint;
