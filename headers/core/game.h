@@ -7,6 +7,7 @@
 #include "window.h"
 #include "entities/swordItem.h"
 #include "utils/util.h"
+#include "ui/view.h"
 
 namespace Core {
 
@@ -17,6 +18,8 @@ namespace Core {
 
         TextureManager textureManager;
         WindowRenderer WindowRenderer;
+
+        UI::View view;
 
         GameState state;
         Uint32 lastEnemyUpdate = 0;
