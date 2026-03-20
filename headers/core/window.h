@@ -7,10 +7,10 @@ namespace Core {
 
     struct WindowRenderer
     {
-        SDL_Renderer* renderer;
-        SDL_Window* window;
-        TTF_Font* Titlefont;
-        TTF_Font* font;
+        SDL_Renderer* renderer = nullptr;
+        SDL_Window* window = nullptr;
+        TTF_Font* Titlefont = nullptr;
+        TTF_Font* font = nullptr;
         
 
         bool initRenderer();
