@@ -3,7 +3,7 @@
 #include <iostream>
 #include "entities/item.h"
 
-namespace Systems{
+namespace Systems {
 
     class Inventory
     {
@@ -22,6 +22,6 @@ namespace Systems{
         
     private:
         std::vector<std::shared_ptr<Entities::Item>> items;
-        const short InventorySize;
+        const short InventorySize = 5;
     };
 }
