@@ -10,6 +10,7 @@
 #include <memory>
 #include "utils/position.h"
 #include "entities/entity.h"
+#include "entities/enemy.h"
 
 namespace Core 
 {
@@ -36,6 +37,7 @@ namespace Core
         Entities::EntityType getEntityTypeAt(Utils::Position pos) const;
         std::shared_ptr<Entities::IEntity> getEntityAt(Utils::Position p);
         const std::vector<std::shared_ptr<Entities::IEntity>>& getEntities() { return entities; };
+        std::vector<std::shared_ptr<Entities::Enemy>>& getEnemies() const;
             
         bool isTileWalkable(Utils::Position pos);
 

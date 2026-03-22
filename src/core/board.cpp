@@ -8,6 +8,7 @@ void Core::Board::setEntityAt(Utils::Position pos, std::shared_ptr<Entities::IEn
         pos.y >= 0 && pos.y < BOARDSIZE)
     {
         e->setPos(pos);
+        entities.push_back(e);
     } else
         std::cerr << "Invalid Position:  (" << pos.x << ", " << pos.y << ")" << std::endl;
 }
@@ -64,4 +65,18 @@ std::shared_ptr<Entities::IEntity> Core::Board::getEntityAt(Utils::Position p)
         }
     }
     return nullptr;
+}
+
+std::vector<std::shared_ptr<Entities::Enemy>>& Core::Board::getEnemies() const{
+
+    std::vector<std::shared_ptr<Entities::Enemy>> enemies;
+    
+    for (const auto& e : entities)
+    {
+        if (e->getType() == Entities::EntityType::ENEMY)
+        {
+            enemies.emplace_back(e);
+        }
+    }
+    return enemies;
 }

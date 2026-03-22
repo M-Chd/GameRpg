@@ -4,6 +4,7 @@
 #include "entities/player.h"
 #include "entities/healItem.h"
 #include "utils/util.h"
+#include "core/game.h"
 
 namespace Core {
 
@@ -17,5 +18,6 @@ namespace Core {
     public:
         void spawnEnemy(Board& board,std::shared_ptr<Entities::Player> player);
         void spawnHeal(Board& board,std::shared_ptr<Entities::Player> player);
+        void enemyAlgorithm(Core::Game& g);
     };
 }

@@ -7,12 +7,8 @@ namespace Entities {
     class SwordItem : public Item
     {
     public:
-        SwordItem(const std::string& _name,float _damage,Utils::Position _pos) : 
-        name(_name),damage(_damage)
-        {
-            name = "sword";
-            pos = _pos;
-        };
+        SwordItem(const std::string& _name,float _damage,Utils::Position _pos) : Item(_name,_pos),damage(_damage)
+        {};
 
         const float getDamage() { return damage; }
         const Utils::Position& getPos() override { return pos; }
@@ -21,7 +17,6 @@ namespace Entities {
         const EntityType getType()override{ return type; };
 
     private:
-        std::string name;
         float damage;
     };
 }

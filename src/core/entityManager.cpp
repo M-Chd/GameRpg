@@ -31,6 +31,23 @@ void Core::EntityManager::spawnHeal(Board& board,std::shared_ptr<Entities::Playe
     }
 }
 
+void Core::EntityManager::enemyAlgorithm(Core::Game& g)
+{
+    auto enemyList = g.board.getEnemies();
+
+    if(!enemyList.empty()){
+        for (const auto& e : enemyList)
+        {
+            if (Utils::calculateDistance(e,g.player) <= 5)
+            {
+                e->chase();
+
+            } else
+                e->patrol();
+        }
+    }
+}
+
 int Core::EntityManager::playerBasedHp(std::shared_ptr<Entities::Player> player)
 {
     int baseHp = 10;

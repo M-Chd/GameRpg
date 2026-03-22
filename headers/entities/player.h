@@ -1,6 +1,7 @@
 #pragma once
 #include <iostream>
 #include "utils/position.h"
+#include "core/board.h"
 #include "stats.h"
 #include "enemy.h"
 #include "inventory.h"
@@ -29,6 +30,9 @@ namespace Entities{
         bool isPlayerProtecting() { return isProtecting; };
         void setPlayerProtecting() { isProtecting = true; }
         void heal(int amount);
+
+        void move(Core::Board& b);
+        void collect(Core::Board& b, Utils::Position pos);
 
         void update() override;
         void render(SDL_Renderer* renderer) override;

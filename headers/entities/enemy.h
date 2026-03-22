@@ -32,7 +32,10 @@ namespace Entities{
         void chase();
         void patrol();
 
-        void setState(EnemyState state);
+        void move(Core::Board& b);
+        void collect(Core::Board& b, Utils::Position pos);
+
+        void setState(EnemyState state) { this->state = state; };
 
         virtual void update() override;
         virtual void render(SDL_Renderer* renderer) override;

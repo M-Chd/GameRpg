@@ -52,14 +52,13 @@ Utils::Position generateRandomPosition(Core::Board& board)
 
 std::vector<Entities::HealItem>& Utils::getHealInBoard(Core::Board& b)
 {
-
     std::vector<Entities::HealItem> Heals;
     
     for (const auto &e : b.getEntities())
     {
         if (e->getType() == Entities::EntityType::ITEM){
             if (dynamic_cast<Entities::HealItem*>(e.get())){
-                Heals.push_back(e);
+                Heals.emplace_back(e);
             }
         }
     }
