@@ -10,6 +10,11 @@ void Entities::Player::attack(std::shared_ptr<Enemy> e)
 
 }
 
+void Entities::Player::heal(int amount)
+{
+    this->stats.healthPoint += amount;
+}
+
 void Entities::Player::update()
 {
 

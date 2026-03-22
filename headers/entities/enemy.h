@@ -20,7 +20,7 @@ namespace Entities{
             pos = _pos;
         }
 
-        EnemeyState getState() { return state; };
+        EnemyState getState() { return state; };
         const Stats& getStats() { return stats; }
         
         const Utils::Position& getPos() override { return pos; };
@@ -32,13 +32,13 @@ namespace Entities{
         void chase();
         void patrol();
 
-        void setState(EnemeyState state);
+        void setState(EnemyState state);
 
         virtual void update() override;
         virtual void render(SDL_Renderer* renderer) override;
 
     private:
         Stats stats;
-        EnemeyState state;
+        EnemyState state;
     };
 }

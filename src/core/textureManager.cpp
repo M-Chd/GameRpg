@@ -69,3 +69,8 @@ void Core::TextureManager::initTexture(TTF_Font* font,SDL_Renderer* renderer)
     SDL_FreeSurface(surfaceManager->enemySurface);
     SDL_FreeSurface(surfaceManager->healSurface);
 }
+
+void Core::TextureManager::clear()
+{
+    delete surfaceManager;
+}

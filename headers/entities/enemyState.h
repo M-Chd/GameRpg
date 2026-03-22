@@ -2,7 +2,7 @@
 
 namespace Entities
 {
-    enum EnemeyState
+    enum EnemyState
     {
         PATROL,CHASE
     };

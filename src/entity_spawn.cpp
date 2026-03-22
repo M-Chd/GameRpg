@@ -133,7 +133,7 @@ void spawnEnemy(Board& board,std::shared_ptr<Player> player){
 
     auto enemy1 = std::make_shared<Mob>(name1,Stats(enemyHp,enemyAttack,enemyDefense),kDefault_pos);
     auto enemy2 = std::make_shared<Mob>(name2,Stats(enemyHp,enemyAttack,enemyDefense),kDefault_pos);
-    auto enemy3 = std::make_shared<Mob>(name3,Stats(enemyHp,enemyAttack,enemyDefense),kDefault_pos);;
+    auto enemy3 = std::make_shared<Mob>(name3,Stats(enemyHp,enemyAttack,enemyDefense),kDefault_pos);
 
 
 

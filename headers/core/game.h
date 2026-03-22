@@ -8,6 +8,7 @@
 #include "entities/swordItem.h"
 #include "utils/util.h"
 #include "ui/view.h"
+#include "core/entityManager.h"
 
 namespace Core {
 
@@ -18,6 +19,7 @@ namespace Core {
 
         TextureManager textureManager;
         WindowRenderer WindowRenderer;
+        EntityManager entityManager;
 
         UI::View view;
 

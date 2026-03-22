@@ -31,5 +31,6 @@ namespace Core {
         
 
         void initTexture(TTF_Font* font,SDL_Renderer* renderer);
+        void clear();
     };
 }

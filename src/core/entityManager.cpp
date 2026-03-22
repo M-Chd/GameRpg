@@ -1,0 +1,67 @@
+#include "core/entityManager.h"
+
+void Core::EntityManager::spawnEnemy(Board& board,std::shared_ptr<Entities::Player> player)
+{
+    int enemyHp = playerBasedHp(player);
+    double enemyAttack = playerBasedAttack(player);
+    double enemyDefense = playerBasedDefense(player);
+
+    auto enemy1 = std::make_shared<Entities::Enemy>(Utils::generateRandomName(),Entities::Stats(enemyHp,enemyAttack,enemyDefense),NULL);
+    auto enemy2 = std::make_shared<Entities::Enemy>(Utils::generateRandomName(),Entities::Stats(enemyHp,enemyAttack,enemyDefense),NULL);
+    auto enemy3 = std::make_shared<Entities::Enemy>(Utils::generateRandomName(),Entities::Stats(enemyHp,enemyAttack,enemyDefense),NULL);
+
+    board.setEntityAt(Utils::generateRandomPosition(board), enemy1);
+    board.setEntityAt(Utils::generateRandomPosition(board), enemy2);
+    board.setEntityAt(Utils::generateRandomPosition(board), enemy3);
+
+}
+
+void Core::EntityManager::spawnHeal(Board& board,std::shared_ptr<Entities::Player> player)
+{
+
+    if(Utils::getHealInBoard(board).empty()){
+        int playerHp = player->getStats().healthPoint;
+        int playerMaxHp = player->getStats().maxHp;
+    
+        if (playerHp <= playerMaxHp/2){
+            double amount = playerBasedHealAmmount(player);
+            auto potionHeal = std::make_shared<Entities::HealItem>("Heal", amount, NULL);
+            board.setEntityAt(Utils::generateRandomPosition(board),potionHeal);
+        }
+    }
+}
+
+int Core::EntityManager::playerBasedHp(std::shared_ptr<Entities::Player> player)
+{
+    int baseHp = 10;
+    int lvl = player->getStats().level;
+    return baseHp + static_cast<int>((lvl - 1) * 5 * 1.25);
+}
+
+
+double Core::EntityManager::playerBasedAttack(std::shared_ptr<Entities::Player> player)
+{
+    double attack = player->getStats().attackPoint;
+    int lvl = player->getStats().level;
+    if (lvl > 1){
+        return attack * 0.55;
+    }
+    return 2.0;
+}
+
+
+double Core::EntityManager::playerBasedDefense(std::shared_ptr<Entities::Player> player)
+{
+    double defense = player->getStats().defensePoint;
+    int lvl = player->getStats().level;
+    if (lvl > 1){
+        return defense * 1.25;
+    }
+    return 2.0;
+}
+
+
+double Core::EntityManager::playerBasedHealAmmount(std::shared_ptr<Entities::Player> player)
+{
+    return player->getStats().maxHp / 1.5;
+}

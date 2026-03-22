@@ -13,7 +13,7 @@ namespace Entities{
         
         Player(Utils::Position _pos, Stats _stats) : stats(_stats)
         {
-            this->stats.xp = 30;
+            this->stats.healthPoint = 10;
             name = "Player";
             pos = _pos;
         };
@@ -28,6 +28,7 @@ namespace Entities{
         void attack(std::shared_ptr<Enemy> e);
         bool isPlayerProtecting() { return isProtecting; };
         void setPlayerProtecting() { isProtecting = true; }
+        void heal(int amount);
 
         void update() override;
         void render(SDL_Renderer* renderer) override;

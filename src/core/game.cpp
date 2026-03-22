@@ -20,15 +20,15 @@ void Core::Game::initEntities()
 {
     int boardSize = 19;
 
-    //TODO SPAWN ENEMY FUNCTION HERE
-    //TODO? Make an EntityManager ?
-
     player = std::make_unique<Entities::Player>(Utils::Position{0,0});
-    board.setEntityAt(Utils::Position{boardSize/2,boardSize/2},player);
+    board.setEntityAt({boardSize/2,boardSize/2},player);
 
     auto sword = std::make_shared<Entities::SwordItem>("Sword",5,NULL);
-    Utils::Position randomPos = Utils::generateRandomItemPosition(boardSize,board);
+    Utils::Position randomPos = Utils::generateRandomPosition(board);
     board.setEntityAt(Utils::Position{randomPos.x,randomPos.y},sword);
+
+    entityManager.spawnEnemy(board,player);
+    entityManager.spawnHeal(board,player);
 }
 
 void Core::Game::quit()
