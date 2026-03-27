@@ -19,5 +19,6 @@ namespace Core {
         void spawnEnemy(Board& board,std::shared_ptr<Entities::Player> player);
         void spawnHeal(Board& board,std::shared_ptr<Entities::Player> player);
         void enemyAlgorithm(Core::Game& g);
+        void initEntities(Core::Game& g);
     };
 }

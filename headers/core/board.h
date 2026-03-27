@@ -16,16 +16,15 @@ namespace Core
 {
     struct Size
     {
-        short boardSize;
-        short tileSize;
+        short boardSize = 19;
+        short tileSize = 32;
     };
 
     class Board 
     {
     private:
 
-        const short BOARDSIZE = 19;
-        const short TILESIZE = 32;
+        Size size;
 
     public:
 
@@ -41,7 +40,7 @@ namespace Core
             
         bool isTileWalkable(Utils::Position pos);
 
-        Size getBoardSizes() const { return {BOARDSIZE,TILESIZE}; }
+        Size getBoardSizes() const { return size; }
             
     private:
         std::vector<std::shared_ptr<Entities::IEntity>> entities;

@@ -1,36 +1,23 @@
 #pragma once
-#include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
-#include <SDL2/SDL_ttf.h>
+#include <unordered_map>
+#include <string>
+#include <iostream>
 
 namespace Core {
 
-    struct SurfaceManager
-    {
-        SDL_Surface* playerSurface = nullptr;
-        SDL_Surface* enemySurface = nullptr;
-        SDL_Surface* swordSurface = nullptr;
-        SDL_Surface* bowSurface = nullptr;
-        SDL_Surface* healSurface = nullptr;
-
-        bool initSurfaces(TTF_Font* font);
-
-    };
-
     struct TextureManager
     {
+        SDL_Renderer* renderer = nullptr;
+        std::unordered_map<std::string, SDL_Texture*> textures;
 
-        SurfaceManager* surfaceManager;
+        bool init(SDL_Renderer* r);
 
-        SDL_Texture* playerTexture = nullptr;
-        SDL_Texture* enemyTexture = nullptr;
-        SDL_Texture* swordTexture = nullptr;
-        SDL_Texture* bowTexture = nullptr;
-        SDL_Texture* healTexture = nullptr;
-        
+        bool load(const std::string& id, const std::string& path);
+        SDL_Texture* get(const std::string& id) const;
 
-        void initTexture(TTF_Font* font,SDL_Renderer* renderer);
         void clear();
     };
+
 }

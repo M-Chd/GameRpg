@@ -4,7 +4,7 @@ namespace Utils
 {
     struct Position
     {
-        int x,y;
+        int x,y = 0;
 
         bool operator==(const Position& other) const 
         {

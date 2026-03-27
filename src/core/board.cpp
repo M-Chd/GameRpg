@@ -4,8 +4,8 @@ void Core::Board::setEntityAt(Utils::Position pos, std::shared_ptr<Entities::IEn
 {
     if(!e) return;
 
-    if (pos.x >= 0 && pos.y < BOARDSIZE &&
-        pos.y >= 0 && pos.y < BOARDSIZE)
+    if (pos.x >= 0 && pos.y < size.boardSize &&
+        pos.y >= 0 && pos.y < size.boardSize)
     {
         e->setPos(pos);
         entities.push_back(e);

@@ -2,6 +2,7 @@
 #pragma once
 #include <SDL2/SDL.h>
 
-
-void input_loop();
-bool is_key_pressed(int scancode);
+namespace Systems
+{
+    bool is_key_pressed(int scancode);
+}

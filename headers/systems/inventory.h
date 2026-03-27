@@ -13,7 +13,7 @@ namespace Systems {
         
         size_t getMaxSize() const;
         size_t getSize() const;
-        const std::vector<std::shared_ptr<Entities::Item>>& getItems() { if (!items.empty()) return items; }
+        const std::vector<std::shared_ptr<Entities::Item>>& getItems() const { return items; };
         
         void addItem(std::shared_ptr<Entities::Item> item);
         void removeItem(const std::string& name);

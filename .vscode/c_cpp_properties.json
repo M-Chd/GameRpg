@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "${vcpkgRoot}/x64-windows/include",
-                "C:\\Users\\mouad\\OneDrive\\Desktop\\GameRpg2.0\\SDL2\\include"
+                "C:\\Users\\mouad\\Desktop\\GameRpg\\include",
+                "C:\\Users\\mouad\\Desktop\\GameRpg\\headers"
             ],
             "defines": [
                 "_DEBUG",
@@ -15,7 +16,7 @@
             "windowsSdkVersion": "10.0.22621.0",
             "compilerPath": "cl.exe",
             "cStandard": "c17",
-            "cppStandard": "c++17",
+            "cppStandard": "c++20",
             "intelliSenseMode": "windows-msvc-x64"
         }
     ],

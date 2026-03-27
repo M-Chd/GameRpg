@@ -16,6 +16,21 @@ void Core::EntityManager::spawnEnemy(Board& board,std::shared_ptr<Entities::Play
 
 }
 
+void Core::EntityManager::initEntities(Core::Game& g)
+{
+    int boardSize = 19;
+
+    g.player = std::make_unique<Entities::Player>(Utils::Position{0,0});
+    g.board.setEntityAt({boardSize/2,boardSize/2},g.player);
+
+    auto sword = std::make_shared<Entities::SwordItem>("Sword",5,NULL);
+    Utils::Position randomPos = Utils::generateRandomPosition(g.board);
+    g.board.setEntityAt(Utils::Position{randomPos.x,randomPos.y},sword);
+
+    spawnEnemy(g.board,g.player);
+    spawnHeal(g.board,g.player);
+}
+
 void Core::EntityManager::spawnHeal(Board& board,std::shared_ptr<Entities::Player> player)
 {
 

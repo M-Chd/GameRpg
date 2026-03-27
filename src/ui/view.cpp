@@ -1,11 +1,123 @@
 #include "ui/view.h"
 
-void UI::View::drawBoard(Core::Game& g) const
+void UI::View::drawBoard(const Core::Game& g) const
 {
     //TODO
 }
 
-void UI::View::drawInfo(Core::Game& g) const
+void UI::View::draw(Core::Game& g)
+{
+    drawBoard(g);
+    drawInfo(g);
+    renderPlayerInfo(g);
+}
+
+void UI::View::drawCombat(Core::Game& g,
+                          std::shared_ptr<Entities::Enemy> mob,
+                          Systems::Turn currentTurn,
+                          int selectedIndex,
+                          bool isInventorySelected)
+{
+    SDL_SetRenderDrawColor(g.WindowRenderer.renderer, 0, 0, 0, 255);
+    SDL_RenderClear(g.WindowRenderer.renderer);
+
+    drawCombatSprites(g, mob);
+    drawCombatHUD(g, mob);
+    drawCombatTurn(g, mob, currentTurn);
+    drawCombatMenu(g, selectedIndex);
+
+    if (isInventorySelected)
+    {
+        getItemInventory(g);
+    }
+}
+
+void UI::View::drawCombatSprites(Core::Game& g, std::shared_ptr<Entities::Enemy> mob)
+{
+    SDL_Rect playerRect = {100, 200, 128, 128};
+    SDL_Rect mobRect = {400, 200, 128, 128};
+
+    SDL_RenderCopy(g.WindowRenderer.renderer,
+                   g.textureManager.get("player"),
+                   nullptr, &playerRect);
+
+    SDL_RenderCopy(g.WindowRenderer.renderer,
+                   g.textureManager.get("enemy"),
+                   nullptr, &mobRect);
+}
+
+void UI::View::drawCombatHUD(Core::Game& g, std::shared_ptr<Entities::Enemy> mob)
+{
+    auto player = g.player;
+
+    std::string playerHpText = "Player HP: " +
+        std::to_string((int)player->getStats().healthPoint) + "/" +
+        std::to_string(player->getStats().maxHp);
+
+    std::string mobHpText = "Enemy HP: " +
+        std::to_string((int)mob->getStats().healthPoint) + "/" +
+        std::to_string(mob->getStats().maxHp);
+
+    renderText(g, playerHpText, 100, 150, {0,255,0});
+    renderText(g, mobHpText, 400, 150, {255,0,0});
+}
+
+void UI::View::drawCombatTurn(Core::Game& g,
+                              std::shared_ptr<Entities::Enemy> mob,
+                              Systems::Turn turn)
+{
+    if (turn == Systems::Turn::ENEMY)
+    {
+        renderText(g,
+                   mob->getName() + " is attacking",
+                   250, 100, {255,0,0});
+    }
+    else
+    {
+        renderText(g, "Player turn", 250, 100, {255,255,255});
+    }
+}
+
+void UI::View::drawCombatMenu(Core::Game& g, int selectedIndex)
+{
+    std::vector<std::string> options = {
+        "Attack","Protect","Inventory","Run"
+    };
+
+    int menuX = 100;
+    int menuY = 400;
+
+    for (size_t i = 0; i < options.size(); i++)
+    {
+        bool selected = (static_cast<int>(i) == selectedIndex);
+
+        std::string line = selected ? "> " + options[i] : "  " + options[i];
+        SDL_Color color = selected ? SDL_Color{255,255,0} : SDL_Color{255,255,255};
+
+        renderText(g, line, menuX + i * 200, menuY, color);
+    }
+
+    DisplayRect(g.WindowRenderer.renderer, menuX, menuY, options);
+}
+
+void DisplayRect(SDL_Renderer* renderer,int x, int y,const std::vector<std::string>& options){
+
+    int SpacingX = 200;
+    int padding = 10;
+
+    for (size_t i = 0; i < options.size(); ++i) {
+        int rectX = x + static_cast<int>(i) * SpacingX - padding;
+        int rectY = y - padding;
+        int rectW = 100 + 2 * padding;
+        int rectH = 30 + 2 * padding;
+
+        SDL_Rect rect = {rectX, rectY, rectW, rectH};
+        SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255); //white
+        SDL_RenderDrawRect(renderer, &rect);
+    }
+}
+
+void UI::View::drawInfo(const Core::Game& g) const
 {
     if(!g.player) return;
 
@@ -21,6 +133,21 @@ void UI::View::drawInfo(Core::Game& g) const
 
     SDL_SetRenderDrawColor(g.WindowRenderer.renderer, 50, 50, 50, 255);
     SDL_RenderFillRect(g.WindowRenderer.renderer, &infoBox);
+}
+
+void UI::View::getItemInventory(Core::Game& g)
+{
+    int space = 50;
+    auto& items = g.player->getInventory().getItems();
+
+    if (!items.empty())
+    {
+        for (auto& i : items){
+            renderText(g,"> " + i->getName(),0 + space,500,{255,255,255});
+            space += 100;
+        }
+    }
+    renderText(g,"- Inventory is empty",50,500,{255,255,255});
 }
 
 void UI::View::renderPlayerInfo(Core::Game& g)
@@ -42,7 +169,7 @@ void UI::View::renderPlayerInfo(Core::Game& g)
     auto stats = player->getStats();
     int nextXp = stats.getXpToNxtLvl();
 
-    auto drawLine = [&](const std::string& text, SDL_Color color = white, int offsetX = 0) {
+    auto drawLine = [&](const std::string& text, SDL_Color color = {255, 255, 255, 255}, int offsetX = 0) {
         renderText(g, text, x + offsetX, y, color);
         y += 30;
     };
@@ -58,12 +185,11 @@ void UI::View::renderPlayerInfo(Core::Game& g)
 
     renderText(g, "near Enemy:", x, y, white);
 
-    //TODO Change this error
+    auto enemy = player->getNearEnemy(g.board);
 
-    if (IsPlayerNearMob(player, g.board)) {
-        auto mob = getNearMob(player, g.board);
-        drawLine(" - " + mob->getMobName() +
-                " (HP: " + std::to_string(mob->getStats().hp) + ")", red, 100);
+    if (enemy) {
+        drawLine(" - " + enemy->getName() +
+                " (HP: " + std::to_string(enemy->getStats().healthPoint) + ")", red, 100);
     } else {
         drawLine(" - None", white, 100);
     }
@@ -72,7 +198,7 @@ void UI::View::renderPlayerInfo(Core::Game& g)
 
     drawLine("Inventory:");
 
-    auto items = player->getInventory().getItems(); //TODO Change this error
+    auto items = player->getInventory().getItems();
 
     if (items.empty()) {
         drawLine(" - (Empty)");
@@ -84,7 +210,7 @@ void UI::View::renderPlayerInfo(Core::Game& g)
     }   
 }
 
-void UI::View::renderText(Core::Game& g, const std::string& text,
+void UI::View::renderText(const Core::Game& g, const std::string& text,
                 int x, int y, SDL_Color c)
 {
     SDL_Surface* surface = TTF_RenderText_Solid(g.WindowRenderer.font, text.c_str(), c );
@@ -98,7 +224,7 @@ void UI::View::renderText(Core::Game& g, const std::string& text,
 	SDL_DestroyTexture(texture);
 }
 
-void UI::View::drawTitleScreen(Core::Game& g)
+void UI::View::drawTitleScreen(const Core::Game& g)
 {
     SDL_SetRenderDrawColor(g.WindowRenderer.renderer, 0, 0, 0, 255);
     SDL_RenderClear(g.WindowRenderer.renderer);
@@ -109,7 +235,7 @@ void UI::View::drawTitleScreen(Core::Game& g)
     renderText(g,"-personal project-",420,570,white);
 }
 
-void UI::View::drawPauseScreen(Core::Game& g)
+void UI::View::drawPauseScreen(const Core::Game& g)
 {
     SDL_SetRenderDrawColor(g.WindowRenderer.renderer, 0, 0, 0, 255);
     SDL_RenderClear(g.WindowRenderer.renderer);
@@ -119,7 +245,7 @@ void UI::View::drawPauseScreen(Core::Game& g)
     renderText(g,"Press ENTER to quit the game",260,300,white);
 }
 
-void UI::View::drawGameOverScreen(Core::Game& g)
+void UI::View::drawGameOverScreen(const Core::Game& g)
 {
     SDL_SetRenderDrawColor(g.WindowRenderer.renderer, 0, 0, 0, 255);
     SDL_RenderClear(g.WindowRenderer.renderer);

@@ -27,13 +27,15 @@ namespace Entities{
         void setPos(Utils::Position p) override;
         const std::string& getName() override { return name; };
         const EntityType getType()override{ return type; };
+
+        void setHp(const int amount);
         
         void attack(std::shared_ptr<Player> e);
         void chase();
         void patrol();
 
         void move(Core::Board& b);
-        void collect(Core::Board& b, Utils::Position pos);
+        //void collect(Core::Board& b, Utils::Position pos);
 
         void setState(EnemyState state) { this->state = state; };
 
@@ -42,6 +44,6 @@ namespace Entities{
 
     private:
         Stats stats;
-        EnemyState state;
+        EnemyState state = EnemyState::PATROL;
     };
 }

@@ -9,6 +9,8 @@
 #include "utils/util.h"
 #include "ui/view.h"
 #include "core/entityManager.h"
+#include "systems/inputs.h"
+#include "utils/input.h"
 
 namespace Core {
 
@@ -23,12 +25,11 @@ namespace Core {
 
         UI::View view;
 
-        GameState state;
+        GameState state = GameState::TITLE;
         Uint32 lastEnemyUpdate = 0;
         const Uint32 enemyUpdateInterval = 800;
 
         void initGame();
-        void initEntities();
         void run();
         void quit();
     };

@@ -5,6 +5,7 @@
 #include "stats.h"
 #include "enemy.h"
 #include "inventory.h"
+#include "utils/direction.h"
 
 namespace Entities{
 
@@ -20,7 +21,7 @@ namespace Entities{
         };
 
         const Systems::Inventory& getInventory() { return inventory; };
-        const Stats& getStats() { return stats; };
+        Stats& getStats() { return stats; };
         const Utils::Position& getPos() override { return pos; }
         void setPos(Utils::Position) override;
         const std::string& getName() override { return name; };
@@ -31,8 +32,10 @@ namespace Entities{
         void setPlayerProtecting() { isProtecting = true; }
         void heal(int amount);
 
-        void move(Core::Board& b);
+        void move(Core::Board& b,Utils::Direction dir);
+        bool run(const int rand1,const int rand2);
         void collect(Core::Board& b, Utils::Position pos);
+        std::shared_ptr<Enemy> getNearEnemy(Core::Board& b);
 
         void update() override;
         void render(SDL_Renderer* renderer) override;
@@ -40,10 +43,6 @@ namespace Entities{
     private:
         Stats stats;
         Systems::Inventory inventory;
-        bool isProtecting;
-
-        SDL_Texture* player_texture;
-        SDL_Surface* Player_surface = nullptr;
-
+        bool isProtecting = false;
     };
 }
