@@ -4,11 +4,13 @@
 #include "enemyState.h"
 #include "utils/position.h"
 #include "player.h"
+#include "utils/direction.h"
 #include <iostream>
 #include <string>
 
-
 namespace Entities{
+
+    class Player;
 
     class Enemy : public IEntity, public std::enable_shared_from_this<Enemy>
     {

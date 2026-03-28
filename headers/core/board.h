@@ -23,7 +23,6 @@ namespace Core
     class Board
     {
     public:
-        Board();
 
         void setEntityAt(Utils::Position pos, std::shared_ptr<Entities::IEntity> e);
         void deleteEntityAt(Utils::Position pos);

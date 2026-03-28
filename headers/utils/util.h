@@ -8,6 +8,17 @@
 #include <math.h>
 #include <random>
 
+namespace Core
+{ 
+    class Board;
+}
+
+namespace Entities
+{
+    class Player;
+    class Enemy;
+}
+
 namespace Utils {
 
     static const std::string names[8] = {"Miku","Teto","Neru","Dante","Rosalina","Borat","GojoTurk","Bunbun"};

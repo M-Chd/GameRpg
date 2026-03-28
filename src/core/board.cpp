@@ -21,12 +21,13 @@ void Core::Board::setEntityAt(Utils::Position pos, std::shared_ptr<Entities::IEn
 
 void Core::Board::deleteEntityAt(Utils::Position pos)
 {
-    entities.erase(
-        std::remove_if(entities.begin(), entities.end(),
-                       [&](const std::shared_ptr<Entities::IEntity>& e) {
-                           return e->getPos() == pos;
-                       }),
-        entities.end());
+    for (auto it = entities.begin(); it != entities.end(); ) {
+        if ((*it)->getPos() == pos) {
+            it = entities.erase(it);
+        } else {
+            ++it;
+        }
+    }
 }
 
 std::shared_ptr<Entities::IEntity> Core::Board::getEntityAt(Utils::Position pos) const

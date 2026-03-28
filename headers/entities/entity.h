@@ -2,6 +2,8 @@
 #include <SDL2/SDL.h>
 #include "entityType.h"
 
+namespace Core { class Game; }
+
 namespace Entities {
 
     class IEntity

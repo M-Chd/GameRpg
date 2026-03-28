@@ -1,7 +1,8 @@
 #pragma once
 #include <iostream>
-#include "entities/player.h"
+#include <memory>
 #include "board.h"
+#include "entities/player.h"
 #include "gamestate.h"
 #include "textureManager.h"
 #include "window.h"
@@ -16,7 +17,7 @@ namespace Core {
 
     struct Game
     {
-        Board board;
+        std::unique_ptr<Board> board;
         std::shared_ptr<Entities::Player> player;
 
         TextureManager textureManager;

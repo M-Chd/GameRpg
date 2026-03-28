@@ -15,6 +15,8 @@ void Core::Game::initGame()
 
     entityManager.initEntities(*this);
 
+    board = std::make_unique<Board>();
+
 }
 
 void Core::Game::quit()
@@ -26,83 +28,115 @@ void Core::Game::run()
 {
     lastEnemyUpdate = SDL_GetTicks();
 
+    bool running = true;
+
+    while (running)
+    {
+        handleEvents(running);
+        update(running);
+        render();
+
+        SDL_Delay(16); // ~60 FPS
+    }
+}
+
+void Core::Game::handleEvents(bool& running)
+{
     SDL_Event e;
-    int end = 0;
-    while (!end) {
-        while (SDL_PollEvent(&e)) {
-            
-            if (e.type == SDL_QUIT){
-                end = 1;
-                quit();
-            }
-            else if (e.type == SDL_KEYDOWN) {
-                SDL_Scancode key = e.key.keysym.scancode;
 
-                if (state == GameState::TITLE && key == SDL_SCANCODE_SPACE) {
-                    state = GameState::GAMEPLAY;
-                }
-                else if (state == GameState::GAMEPLAY && key == SDL_SCANCODE_ESCAPE) {
-                    state = GameState::PAUSE;
-                }
-                else if (state == GameState::PAUSE) {
-                    if (key == SDL_SCANCODE_ESCAPE) {
+    while (SDL_PollEvent(&e))
+    {
+        if (e.type == SDL_QUIT)
+        {
+            running = false;
+            quit();
+        }
+        else if (e.type == SDL_KEYDOWN)
+        {
+            SDL_Scancode key = e.key.keysym.scancode;
+
+            switch (state)
+            {
+                case GameState::TITLE:
+                    if (key == SDL_SCANCODE_SPACE)
                         state = GameState::GAMEPLAY;
-                        std::cout << "Resume Game" << std::endl;
-                    } else if (key == SDL_SCANCODE_RETURN) {
-                        end = true;
-                    }
-                } else if (state == GameState::GAMEOVER){
-                    view.drawGameOverScreen(*this);
-                    if (key == SDL_SCANCODE_RETURN){
-                        end = true;
-                    }
-                    SDL_RenderPresent(WindowRenderer.renderer);
-                }
+                    break;
+
+                case GameState::GAMEPLAY:
+                    if (key == SDL_SCANCODE_ESCAPE)
+                        state = GameState::PAUSE;
+                    break;
+
+                case GameState::PAUSE:
+                    if (key == SDL_SCANCODE_ESCAPE)
+                        state = GameState::GAMEPLAY;
+                    else if (key == SDL_SCANCODE_RETURN)
+                        running = false;
+                    break;
+
+                case GameState::GAMEOVER:
+                    if (key == SDL_SCANCODE_RETURN)
+                        running = false;
+                    break;
             }
-		}
-        if (state == GameState::TITLE){
-            if (Systems::is_key_pressed(SDL_SCANCODE_SPACE)){
-                state = GameState::GAMEPLAY;
-            }
-
-            view.drawTitleScreen(*this);
-            SDL_RenderPresent(WindowRenderer.renderer);
-            SDL_Delay(20);
-        }
-        else if (state == GameState::PAUSE){
-
-            view.drawPauseScreen(*this);
-            SDL_RenderPresent(WindowRenderer.renderer);
-            SDL_Delay(20);
-
-        }
-        else if (state == GameState::GAMEPLAY){
-
-            if (player->getStats().healthPoint == 0){
-                state = GameState::GAMEOVER;
-            }
-
-            Uint32 currentTime = SDL_GetTicks();
-            if (currentTime - lastEnemyUpdate > enemyUpdateInterval) {
-                entityManager.enemyAlgorithm(*this);
-                lastEnemyUpdate = currentTime;
-            }
-
-            for (const auto& [key, dir] : Systems::keyToDirection) {
-                if (Systems::is_key_pressed(key)) {
-                    player->move(*this,dir);
-                }
-            }
-
-            if(board.getEnemies().empty()){
-                entityManager.spawnEnemy(board,player);
-            }
-
-            entityManager.spawnHeal(board,player);
-
-		    view.draw(*this);
-		    SDL_RenderPresent(WindowRenderer.renderer);
-            SDL_Delay(80);
         }
     }
+}
+
+void Core::Game::update(bool& running)
+{
+    if (state != GameState::GAMEPLAY)
+        return;
+
+    if (player->getStats().healthPoint == 0)
+    {
+        state = GameState::GAMEOVER;
+        return;
+    }
+
+    Uint32 currentTime = SDL_GetTicks();
+
+    if (currentTime - lastEnemyUpdate > enemyUpdateInterval)
+    {
+        entityManager.enemyAlgorithm(*this);
+        lastEnemyUpdate = currentTime;
+    }
+
+    for (const auto& [key, dir] : Systems::keyToDirection)
+    {
+        if (Systems::is_key_pressed(key))
+        {
+            player->move(*this, dir);
+        }
+    }
+
+    if (board.getEnemies().empty())
+    {
+        entityManager.spawnEnemy(board, player);
+    }
+
+    entityManager.spawnHeal(board, player);
+}
+
+void Core::Game::render()
+{
+    switch (state)
+    {
+        case GameState::TITLE:
+            view.drawTitleScreen(*this);
+            break;
+
+        case GameState::PAUSE:
+            view.drawPauseScreen(*this);
+            break;
+
+        case GameState::GAMEOVER:
+            view.drawGameOverScreen(*this);
+            break;
+
+        case GameState::GAMEPLAY:
+            view.draw(*this);
+            break;
+    }
+    SDL_RenderPresent(WindowRenderer.renderer);
 }

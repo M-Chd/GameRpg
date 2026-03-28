@@ -1,6 +1,6 @@
 #include "core/entityManager.h"
 
-void Core::EntityManager::spawnEnemy(Board& board,std::shared_ptr<Entities::Player> player)
+void Core::EntityManager::spawnEnemy(std::unique_ptr<Board> board,std::shared_ptr<Entities::Player> player)
 {
     int enemyHp = this->playerBasedHp(player);
     double enemyAttack = this->playerBasedAttack(player);
@@ -10,9 +10,9 @@ void Core::EntityManager::spawnEnemy(Board& board,std::shared_ptr<Entities::Play
     auto enemy2 = std::make_shared<Entities::Enemy>(Utils::generateRandomName(),Entities::Stats(enemyHp,enemyAttack,enemyDefense),NULL);
     auto enemy3 = std::make_shared<Entities::Enemy>(Utils::generateRandomName(),Entities::Stats(enemyHp,enemyAttack,enemyDefense),NULL);
 
-    board.setEntityAt(Utils::generateRandomPosition(board), enemy1);
-    board.setEntityAt(Utils::generateRandomPosition(board), enemy2);
-    board.setEntityAt(Utils::generateRandomPosition(board), enemy3);
+    board->setEntityAt(Utils::generateRandomPosition(*board), enemy1);
+    board->setEntityAt(Utils::generateRandomPosition(*board), enemy2);
+    board->setEntityAt(Utils::generateRandomPosition(*board), enemy3);
 
 }
 
@@ -21,20 +21,20 @@ void Core::EntityManager::initEntities(Core::Game& g)
     int boardSize = 19;
 
     g.player = std::make_unique<Entities::Player>(Utils::Position{0,0});
-    g.board.setEntityAt({boardSize/2,boardSize/2},g.player);
+    *g.board.setEntityAt({boardSize/2,boardSize/2},g.player);
 
     auto sword = std::make_shared<Entities::SwordItem>("Sword",5,NULL);
     Utils::Position randomPos = Utils::generateRandomPosition(g.board);
-    g.board.setEntityAt(Utils::Position{randomPos.x,randomPos.y},sword);
+    *g.board.setEntityAt(Utils::Position{randomPos.x,randomPos.y},sword);
 
-    spawnEnemy(g.board,g.player);
-    spawnHeal(g.board,g.player);
+    spawnEnemy(*g.board,g.player);
+    spawnHeal(*g.board,g.player);
 }
 
-void Core::EntityManager::spawnHeal(Board& board,std::shared_ptr<Entities::Player> player)
+void Core::EntityManager::spawnHeal(std::unique_ptr<Board> board,std::shared_ptr<Entities::Player> player)
 {
 
-    if(Utils::getHealInBoard(board).empty()){
+    if(Utils::getHealInBoard(*board).empty()){
         int playerHp = player->getStats().healthPoint;
         int playerMaxHp = player->getStats().maxHp;
     
@@ -48,7 +48,7 @@ void Core::EntityManager::spawnHeal(Board& board,std::shared_ptr<Entities::Playe
 
 void Core::EntityManager::enemyAlgorithm(Core::Game& g)
 {
-    auto enemyList = g.board.getEnemies();
+    auto enemyList = *g.board.getEnemies();
 
     if(!enemyList.empty()){
         for (const auto& e : enemyList)

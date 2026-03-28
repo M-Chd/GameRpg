@@ -4,10 +4,15 @@
 #include "core/board.h"
 #include "stats.h"
 #include "enemy.h"
-#include "inventory.h"
+#include "systems/inventory.h"
 #include "utils/direction.h"
 #include "core/game.h"
 #include "systems/combat.h"
+
+namespace Core
+{
+    class Board;
+}
 
 namespace Entities{
 
