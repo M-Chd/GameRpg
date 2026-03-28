@@ -24,7 +24,11 @@ namespace Core {
         std::unique_ptr<Board> board;
         std::shared_ptr<Entities::Player> player;
         std::shared_ptr<Entities::Enemy> currentEnemy;
-        Systems::Turn currentTurn;
+        
+        Systems::Turn currentTurn = Systems::Turn::PLAYER;
+        int selectedIndex = 0;
+        bool inventorySelected = false;
+        bool isCombatOver = false;
 
         TextureManager textureManager;
         WindowRenderer WindowRenderer;

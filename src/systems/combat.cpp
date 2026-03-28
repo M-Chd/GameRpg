@@ -1,4 +1,5 @@
 #include "systems/combat.h"
+#include "core/gamestate.h"
 #include <iostream>
 
 void Systems::handlePlayerTurn(Core::Game& game,
@@ -73,40 +74,12 @@ void Systems::handleMobTurn(Core::Game& game, std::shared_ptr<Entities::Enemy> e
     SDL_Delay(500);
 }
 
-void Systems::StartFight(Core::Game& game,
-                         std::shared_ptr<Entities::Enemy> enemy)
+void Systems::StartFight(Core::Game& game, std::shared_ptr<Entities::Enemy> enemy)
 {
-    bool isCombatOver = false;
-    int selectedIndex = 0;
-    bool inventorySelected = false;
-    game.player->setPlayerProtecting();
-    Turn currentTurn = Turn::PLAYER;
-
-    while (!isCombatOver)
-    {
-        game.view.drawCombat(game, enemy, currentTurn, selectedIndex, inventorySelected);
-
-        if (enemy->getStats().healthPoint <= 0) {
-            isCombatOver = true;
-            game.player->getStats().gainXp(enemy->getStats().level * 3);
-            break;
-        }
-        if (game.player->getStats().healthPoint <= 0) {
-            isCombatOver = true;
-            break;
-        }
-        if (currentTurn == Turn::PLAYER) {
-            handlePlayerTurn(game, currentTurn, enemy, selectedIndex, inventorySelected, isCombatOver);
-        }
-        else if (currentTurn == Turn::ENEMY) {
-            handleMobTurn(game, enemy);
-
-            if (game.player->getStats().healthPoint <= 0) {
-                isCombatOver = true;
-                break;
-            }
-
-            currentTurn = Turn::PLAYER;
-        }
-    }
+    game.state = Core::GameState::FIGHT;
+    game.currentEnemy = enemy; 
+    game.currentTurn = Turn::PLAYER;
+    game.isCombatOver = false;
+    
+    std::cout << "Combat started against: " << enemy->getName() << std::endl;
 }

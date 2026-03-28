@@ -29,8 +29,8 @@ void Core::EntityManager::initEntities(Core::Game& g)
     Utils::Position randomPos = Utils::generateRandomPosition(*g.board);
     g.board->setEntityAt(Utils::Position{randomPos.x,randomPos.y},sword);
 
-    spawnEnemy(*g.board,g.player);
-    spawnHeal(*g.board,g.player);
+    //spawnEnemy(*g.board,g.player);
+    //spawnHeal(*g.board,g.player);
 }
 
 void Core::EntityManager::spawnHeal(Core::Board& board,std::shared_ptr<Entities::Player> player)

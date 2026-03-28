@@ -44,40 +44,43 @@ void Core::Game::run()
 void Core::Game::handleEvents(bool& running)
 {
     SDL_Event e;
-
     while (SDL_PollEvent(&e))
     {
         if (e.type == SDL_QUIT)
         {
             running = false;
-            quit();
+            return;
         }
-        else if (e.type == SDL_KEYDOWN)
+
+        if (e.type == SDL_KEYDOWN)
         {
-            SDL_Scancode key = e.key.keysym.scancode;
+            SDL_Scancode key;
 
             switch (state)
             {
                 case GameState::TITLE:
-                    if (key == SDL_SCANCODE_SPACE)
-                        state = GameState::GAMEPLAY;
+                    if (Systems::is_key_pressed(SDL_SCANCODE_SPACE)) state = GameState::GAMEPLAY;
                     break;
 
                 case GameState::GAMEPLAY:
-                    if (key == SDL_SCANCODE_ESCAPE)
-                        state = GameState::PAUSE;
+                    if (Systems::is_key_pressed(SDL_SCANCODE_W)) player->move(*this, Utils::Direction::UP);
+                    else if (Systems::is_key_pressed(SDL_SCANCODE_S)) player->move(*this, Utils::Direction::DOWN);
+                    else if (Systems::is_key_pressed(SDL_SCANCODE_A)) player->move(*this, Utils::Direction::LEFT);
+                    else if (Systems::is_key_pressed(SDL_SCANCODE_D)) player->move(*this, Utils::Direction::RIGHT);
+                    else if (Systems::is_key_pressed(SDL_SCANCODE_RETURN)) state = GameState::PAUSE;
+                    break;
+
+                case GameState::FIGHT:
+                    Systems::handlePlayerTurn(*this, currentTurn, currentEnemy, selectedIndex, inventorySelected, isCombatOver);
                     break;
 
                 case GameState::PAUSE:
-                    if (key == SDL_SCANCODE_ESCAPE)
-                        state = GameState::GAMEPLAY;
-                    else if (key == SDL_SCANCODE_RETURN)
-                        running = false;
+                    if (Systems::is_key_pressed(SDL_SCANCODE_ESCAPE)) state = GameState::GAMEPLAY;
+                    else if (Systems::is_key_pressed(SDL_SCANCODE_RETURN)) running = false;
                     break;
 
                 case GameState::GAMEOVER:
-                    if (key == SDL_SCANCODE_RETURN)
-                        running = false;
+                    if (Systems::is_key_pressed(SDL_SCANCODE_RETURN)) running = false;
                     break;
             }
         }
@@ -86,37 +89,49 @@ void Core::Game::handleEvents(bool& running)
 
 void Core::Game::update(bool& running)
 {
-    if (state != GameState::GAMEPLAY)
-        return;
-
-    if (player->getStats().healthPoint == 0)
+    if (player->getStats().healthPoint <= 0)
     {
         state = GameState::GAMEOVER;
         return;
     }
 
-    Uint32 currentTime = SDL_GetTicks();
-
-    if (currentTime - lastEnemyUpdate > enemyUpdateInterval)
+    if (state == GameState::GAMEPLAY)
     {
-        entityManager->enemyAlgorithm(*this);
-        lastEnemyUpdate = currentTime;
-    }
+        Uint32 currentTime = SDL_GetTicks();
 
-    for (const auto& [key, dir] : Systems::keyToDirection)
-    {
-        if (Systems::is_key_pressed(key))
+        if (currentTime - lastEnemyUpdate > enemyUpdateInterval)
         {
-            player->move(*this, dir);
+            entityManager->enemyAlgorithm(*this);
+            lastEnemyUpdate = currentTime;
+        }
+
+        /*
+        if (board->getEnemies().empty())
+        {
+            entityManager->spawnEnemy(*board, player);
+        }
+        */
+
+        entityManager->spawnHeal(*board, player);
+    }
+    else if (state == GameState::FIGHT)
+    {
+        if (currentTurn == Systems::Turn::ENEMY && !isCombatOver)
+        {
+            Systems::handleMobTurn(*this, currentEnemy);
+            currentTurn = Systems::Turn::PLAYER;
+        }
+
+        if (isCombatOver || currentEnemy->getStats().healthPoint <= 0)
+        {
+            if (currentEnemy->getStats().healthPoint <= 0) {
+                player->getStats().gainXp(currentEnemy->getStats().level * 3);
+                board->deleteEntityAt(currentEnemy->getPos());
+            }
+            state = GameState::GAMEPLAY;
+            currentEnemy = nullptr;
         }
     }
-
-    if (board->getEnemies().empty())
-    {
-        entityManager->spawnEnemy(*board, player);
-    }
-
-    entityManager->spawnHeal(*board, player);
 }
 
 void Core::Game::render()
@@ -138,13 +153,16 @@ void Core::Game::render()
             view.drawGameOverScreen(*this);
             break;
 
-        case GameState::COMBAT:
-            view.drawCombat(*this,currentEnemy,currentTurn,0,false);
+        case GameState::FIGHT:
+            if (currentEnemy) {
+                view.drawCombat(*this, currentEnemy, currentTurn, selectedIndex, inventorySelected);
+            }
             break;
 
         case GameState::GAMEPLAY:
             view.draw(*this);
             break;
     }
+
     SDL_RenderPresent(WindowRenderer.renderer);
 }

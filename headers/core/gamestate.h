@@ -12,6 +12,6 @@ namespace Core {
         /// Pause mode
         PAUSE,
         /// Game over, player is at 0 hp.
-        GAMEOVER
+        GAMEOVER,
     };
 }

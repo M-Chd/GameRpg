@@ -12,7 +12,7 @@ void Entities::Player::attack(std::shared_ptr<Enemy> e)
 
     if (e->getStats().healthPoint > 0)
     {
-        e->setHp(stats.healthPoint - damage);
+        e->setHp(e->getStats().healthPoint - damage);
     }
 }
 
