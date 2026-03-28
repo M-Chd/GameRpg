@@ -5,9 +5,12 @@
 #include "entities/healItem.h"
 #include "utils/util.h"
 
+namespace Entities { class Player; }
+
 namespace Core {
 
     struct Game;
+    class Board;
 
     struct EntityManager
     {

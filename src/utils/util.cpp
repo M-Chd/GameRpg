@@ -19,11 +19,14 @@ Utils::Direction Utils::getRandDir()
     case 3:
         return Utils::Direction::RIGHT;
         break;
+    default:
+        return Utils::Direction::UP;
+        break;
     }
 }
 
-void Utils::HealPlayerOnItem(std::shared_ptr<Entities::Player> player, std::unique_ptr<Core::Board> board, Utils::Position pos) {
-	auto entity = board->getEntityAt(pos).get();
+void Utils::HealPlayerOnItem(std::shared_ptr<Entities::Player> player, Core::Board& board, Utils::Position pos) {
+	auto entity = board.getEntityAt(pos).get();
 	auto healItem = dynamic_cast<Entities::HealItem*>(entity);
 	if (healItem) {
 		player->heal(healItem->getAmmount());
@@ -90,15 +93,15 @@ Utils::Position Utils::generateRandomPosition(Core::Board& board)
     return { x , y };
 }
 
-std::vector<Entities::HealItem>& Utils::getHealInBoard(Core::Board& b)
-{
-    std::vector<Entities::HealItem> Heals;
-    
-    for (const auto &e : b.getEntities())
-    {
-        if (e->getType() == Entities::EntityType::ITEM){
-            if (dynamic_cast<Entities::HealItem*>(e.get())){
-                Heals.emplace_back(e);
+std::vector<std::shared_ptr<Entities::HealItem>> Utils::getHealInBoard(Core::Board& board) {
+    std::vector<std::shared_ptr<Entities::HealItem>> Heals;
+    auto allEntities = board.getEntities();
+
+    for (auto& e : allEntities) {
+        if (e->getType() == Entities::EntityType::HEAL) {
+            auto heal = std::dynamic_pointer_cast<Entities::HealItem>(e);
+            if (heal) {
+                Heals.push_back(heal);
             }
         }
     }

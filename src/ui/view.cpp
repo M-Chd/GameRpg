@@ -1,12 +1,15 @@
 #include "ui/view.h"
+#include "core/game.h"
+#include "entities/player.h"
+#include "entities/enemy.h"
 
 void UI::View::drawBoard(const Core::Game& g) const
 {
     auto& board = g.board;
     auto renderer = g.WindowRenderer.renderer;
 
-    const int tileSize = 32;
-    const int boardSize = 19;
+    const int tileSize = board->getBoardSizes().tileSize;
+    const int boardSize = board->getBoardSizes().boardSize;
 
     for (int i = 0; i < boardSize; ++i)
     {
@@ -21,10 +24,10 @@ void UI::View::drawBoard(const Core::Game& g) const
             SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255);
             SDL_RenderDrawRect(renderer, &cell);
 
-            auto entity = board.getEntityAt(pos);
+            auto entity = board->getEntityAt(pos);
             if (entity)
             {
-                entity->render(renderer);
+                entity->render(g);
             }
         }
     }
@@ -125,7 +128,7 @@ void UI::View::drawCombatMenu(Core::Game& g, int selectedIndex)
     DisplayRect(g.WindowRenderer.renderer, menuX, menuY, options);
 }
 
-void DisplayRect(SDL_Renderer* renderer,int x, int y,const std::vector<std::string>& options){
+void UI::View::DisplayRect(SDL_Renderer* renderer,int x, int y,const std::vector<std::string>& options){
 
     int SpacingX = 200;
     int padding = 10;
@@ -210,7 +213,7 @@ void UI::View::renderPlayerInfo(Core::Game& g)
 
     renderText(g, "near Enemy:", x, y, white);
 
-    auto enemy = player->getNearEnemy(g.board);
+    auto enemy = player->getNearEnemy(*g.board);
 
     if (enemy) {
         drawLine(" - " + enemy->getName() +

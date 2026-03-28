@@ -14,12 +14,13 @@ namespace Entities{
             name = _name;
             pos = _pos;
         };
+        virtual ~Item() = default;
 
         const Utils::Position& getPos() override { return pos; }
         void setPos(Utils::Position pos) override { this->pos = pos; }
         const std::string& getName() override { return name; };
         const EntityType getType()override{ return type; };
 
-        void render(const Core::Game& g) override;
+        void render(const Core::Game& g) override = 0;
     };
 }

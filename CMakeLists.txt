@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD 20)
 add_executable(${PROJECT_NAME}
     src/main.cpp
     src/core/board.cpp
+    src/core/game.cpp
     src/core/entityManager.cpp
     src/core/textureManager.cpp
     src/core/window.cpp
@@ -18,6 +19,7 @@ add_executable(${PROJECT_NAME}
     src/systems/input.cpp
     src/systems/inventory.cpp
     src/ui/view.cpp
+    src/utils/util.cpp
 )
 
 # Include (headers + SDL)

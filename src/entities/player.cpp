@@ -21,7 +21,7 @@ void Entities::Player::heal(int amount)
     this->stats.healthPoint += amount;
 }
 
-void Entities::Player::collect(std::unique_ptr<Core::Board>  board, Utils::Position pos)
+void Entities::Player::collect(Core::Board&  b, Utils::Position pos)
 {
     auto item = b.getEntityAt(pos);
     if (!item) {
@@ -34,7 +34,7 @@ void Entities::Player::collect(std::unique_ptr<Core::Board>  board, Utils::Posit
         return;
     }
     inventory.addItem(itemPtr);
-    b->setEntityAt(pos, nullptr);
+    b.setEntityAt(pos, nullptr);
     
     std::cout << "Item " << itemPtr->getName() << " collected" << std::endl;
 }
@@ -84,11 +84,11 @@ void Entities::Player::move(Core::Game& game, Utils::Direction dir)
 
     switch (targetEntity->getType()) {
         case Entities::EntityType::ITEM:
-            collect(board, targetPos);
+            collect(*board, targetPos);
             break;
 
         case Entities::EntityType::HEAL:
-            Utils::HealPlayerOnItem(shared_from_this(), board, targetPos);
+            Utils::HealPlayerOnItem(shared_from_this(), *board, targetPos);
             break;
 
         case Entities::EntityType::ENEMY: {
@@ -127,16 +127,16 @@ double Entities::Player::damageWithProtect(int amount)
     return newAttackAmount;
 }
 
-std::shared_ptr<Entities::Enemy> Entities::Player::getNearEnemy(std::unique_ptr<Board> b)
+std::shared_ptr<Entities::Enemy> Entities::Player::getNearEnemy(Core::Board& b)
 {
     auto playerPos = pos;
 
 	for (int x = playerPos.x - 2; x <= playerPos.x + 2; ++x) {
 		for (int y = playerPos.y - 2; y <= playerPos.y + 2; ++y) {
-			if (x >= 0 && x < b->getBoardSizes().boardSize && y >= 0 && y < b.getBoardSizes().boardSize) {
-				auto enemy = b->getEntityAt({x,y});
+			if (x >= 0 && x < b.getBoardSizes().boardSize && y >= 0 && y < b.getBoardSizes().boardSize) {
+				auto enemy = b.getEntityAt({x,y});
 				if (enemy && enemy->getType() == EntityType::ENEMY) {
-					return std::make_shared<Entities::Enemy>(enemy);
+					return std::dynamic_pointer_cast<Entities::Enemy>(enemy);
 				}
 			}
 		}

@@ -2,6 +2,7 @@
 #include <vector>
 #include <iostream>
 #include "entities/item.h"
+#include <memory>
 
 namespace Systems {
 

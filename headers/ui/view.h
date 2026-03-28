@@ -1,8 +1,15 @@
 #pragma once
+#include <iostream>
 #include <SDL2/SDL.h>
-#include <SDL2/SDL_ttf.h>
-#include "core/game.h"
+#include <vector>
+#include <string>
+#include <memory>
 #include "systems/turn.h"
+
+
+namespace Core { struct Game; }
+namespace Entities { class Enemy; }
+namespace Systems { enum Turn; }
 
 namespace UI {
 
@@ -19,6 +26,7 @@ namespace UI {
         void drawGameOverScreen(const Core::Game& g);
         void draw(Core::Game& g);
         void getItemInventory(Core::Game& g);
+        void DisplayRect(SDL_Renderer* renderer,int x, int y,const std::vector<std::string>& options);
 
         void drawCombat(Core::Game& g,
                 std::shared_ptr<Entities::Enemy> mob,

@@ -1,16 +1,18 @@
 #pragma once
 #include <string>
+#include <vector>
 #include <sstream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <SDL2/SDL_ttf.h>
-#include <vector>
 #include <iostream>
 #include <unordered_map>
 #include <memory>
 #include "utils/position.h"
 #include "entities/entity.h"
 #include "entities/enemy.h"
+
+namespace Entities { class Enemy; }
 
 namespace Core 
 {

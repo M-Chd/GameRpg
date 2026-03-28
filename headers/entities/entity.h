@@ -1,6 +1,8 @@
 #pragma once
 #include <SDL2/SDL.h>
 #include "entityType.h"
+#include "utils/position.h"
+#include <string>
 
 namespace Core { class Game; }
 

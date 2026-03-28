@@ -16,6 +16,8 @@ bool Core::WindowRenderer::initRenderer()
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
     SDL_RenderClear(renderer);
     SDL_RenderPresent(renderer);
+
+    return true;
 }
 
 bool Core::WindowRenderer::initWindow(int height, int length)
@@ -32,6 +34,8 @@ bool Core::WindowRenderer::initWindow(int height, int length)
         SDL_Quit();
         return false;
     }
+
+    return true;
 }
 
 bool Core::WindowRenderer::initFonts()
@@ -57,6 +61,8 @@ bool Core::WindowRenderer::initFonts()
         SDL_Quit();
         return false;
     }
+
+    return true;
 }
 
 void Core::WindowRenderer::quit()

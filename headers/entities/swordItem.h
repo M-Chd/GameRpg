@@ -1,6 +1,7 @@
 #pragma once
 
 #include "item.h"
+#include "core/game.h"
 
 namespace Entities {
 

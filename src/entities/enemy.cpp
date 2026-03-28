@@ -63,7 +63,7 @@ void Entities::Enemy::chase(Core::Game& g,std::shared_ptr<Entities::Player> p)
 
 void Entities::Enemy::patrol(Core::Game& g)
 {
-    Direction dir = getRandDir();
+    Utils::Direction dir = Utils::getRandDir();
     move(g,dir);
 }
 
@@ -87,7 +87,7 @@ void Entities::Enemy::move(Core::Game& game,Utils::Direction dir)
     {
         auto player = std::dynamic_pointer_cast<Entities::Player>(targetEntity);
         Systems::StartFight(game, shared_from_this());
-        board.deleteEntityAt(currentPos);
+        board->deleteEntityAt(currentPos);
         return;
     }
 

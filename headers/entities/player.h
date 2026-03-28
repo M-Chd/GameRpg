@@ -16,6 +16,8 @@ namespace Core
 
 namespace Entities{
 
+    class Enemy;
+    
     class Player : public IEntity, public std::enable_shared_from_this<Player>
     {
     public:
@@ -50,8 +52,8 @@ namespace Entities{
 
         void move(Core::Game& g,Utils::Direction dir);
         bool run(const int rand1,const int rand2);
-        void collect(std::unique_ptr<Core::Board> board, Utils::Position pos);
-        std::shared_ptr<Enemy> getNearEnemy(std::unique_ptr<Core::Board> board);
+        void collect(Core::Board& board, Utils::Position pos);
+        std::shared_ptr<Enemy> getNearEnemy(Core::Board& board);
 
     private:
         Stats stats;

@@ -2,16 +2,17 @@
 #include <iostream>
 #include <memory>
 #include "board.h"
+#include "ui/view.h"
 #include "entities/player.h"
 #include "gamestate.h"
 #include "textureManager.h"
 #include "window.h"
 #include "entities/swordItem.h"
 #include "utils/util.h"
-#include "ui/view.h"
 #include "core/entityManager.h"
 #include "systems/inputs.h"
 #include "systems/input.h"
+
 
 namespace Core {
 
@@ -25,7 +26,7 @@ namespace Core {
 
         TextureManager textureManager;
         WindowRenderer WindowRenderer;
-        EntityManager* entityManager;
+        std::unique_ptr<EntityManager> entityManager;
 
         UI::View view;
 

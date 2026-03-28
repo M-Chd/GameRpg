@@ -2,6 +2,8 @@
 #include "core/game.h"
 #include <iostream>
 
+using namespace Core;
+
 /**
  * Main function
  */

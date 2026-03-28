@@ -60,3 +60,8 @@ std::vector<std::shared_ptr<Entities::Enemy>> Core::Board::getEnemies() const
     }
     return enemies;
 }
+
+std::vector<std::shared_ptr<Entities::IEntity>> Core::Board::getEntities() const
+{
+    return entities;
+}
