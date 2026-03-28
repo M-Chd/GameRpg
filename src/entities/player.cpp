@@ -101,6 +101,21 @@ void Entities::Player::move(Core::Game& game, Utils::Direction dir)
     }
 }
 
+void Entities::Player::render(const Core::Game& g)
+{
+    SDL_Rect rect = { pos.y * 32, pos.x * 32, 32, 32 };
+
+    SDL_Texture* tex = g.textureManager.get("player");
+
+    if (tex)
+        SDL_RenderCopy(g.WindowRenderer.renderer, tex, nullptr, &rect);
+    else
+    {
+        SDL_SetRenderDrawColor(g.WindowRenderer.renderer, 255, 0, 0, 255);
+        SDL_RenderFillRect(g.WindowRenderer.renderer, &rect);
+    }
+}
+
 double Entities::Player::damageWithProtect(int amount)
 {
     if (!isPlayerProtecting()){

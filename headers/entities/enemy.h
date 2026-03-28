@@ -35,7 +35,7 @@ namespace Entities{
         
         void attack(std::shared_ptr<Player> p);
         void chase(Core::Game& g,std::shared_ptr<Player> p);
-        void patrol();
+        void patrol(Core::Game& g);
 
         void move(Core::Game& g, Utils::Direction dir);
         //void collect(Core::Board& b, Utils::Position pos);

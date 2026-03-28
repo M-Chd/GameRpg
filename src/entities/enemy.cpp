@@ -8,6 +8,21 @@ void Entities::Enemy::setHp(const int amount)
     stats.healthPoint = amount;
 }
 
+void Entities::Enemy::render(const Core::Game& g)
+{
+    SDL_Rect rect = { pos.y * 32, pos.x * 32, 32, 32 };
+
+    SDL_Texture* tex = g.textureManager.get("enemy");
+
+    if (tex)
+        SDL_RenderCopy(g.WindowRenderer.renderer, tex, nullptr, &rect);
+    else
+    {
+        SDL_SetRenderDrawColor(g.WindowRenderer.renderer, 0, 0, 255, 255);
+        SDL_RenderFillRect(g.WindowRenderer.renderer, &rect);
+    }
+}
+
 void Entities::Enemy::attack(std::shared_ptr<Player> p)
 {
     double attackAmount = getStats().attackPoint;
@@ -46,9 +61,10 @@ void Entities::Enemy::chase(Core::Game& g,std::shared_ptr<Entities::Player> p)
     }
 }
 
-void Entities::Enemy::patrol()
+void Entities::Enemy::patrol(Core::Game& g)
 {
-
+    Direction dir = getRandDir();
+    move(g,dir);
 }
 
 void Entities::Enemy::setPos(const Utils::Position pos)

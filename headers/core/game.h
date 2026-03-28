@@ -32,5 +32,9 @@ namespace Core {
         void initGame();
         void run();
         void quit();
+
+        void handleEvents(bool& r);
+        void update(bool& r);
+        void render();
     };
 }
