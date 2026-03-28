@@ -138,6 +138,10 @@ void Core::Game::render()
             view.drawGameOverScreen(*this);
             break;
 
+        case GameState::COMBAT:
+            view.drawCombat(*this,currentEnemy,currentTurn,0,false);
+            break;
+
         case GameState::GAMEPLAY:
             view.draw(*this);
             break;

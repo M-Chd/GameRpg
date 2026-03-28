@@ -6,6 +6,12 @@ bool Core::WindowRenderer::initRenderer()
 
     renderer = SDL_CreateRenderer(window, -1 , SDL_RENDERER_ACCELERATED);
 
+    int imgFlags = IMG_INIT_PNG | IMG_INIT_JPG;
+    if (!(IMG_Init(imgFlags) & imgFlags)) {
+        std::cerr << "SDL_image Error: " << IMG_GetError() << std::endl;
+        return false;
+    }
+
     if (!renderer)
     {
         SDL_DestroyWindow(window);

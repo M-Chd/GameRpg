@@ -23,6 +23,8 @@ namespace Core {
     {
         std::unique_ptr<Board> board;
         std::shared_ptr<Entities::Player> player;
+        std::shared_ptr<Entities::Enemy> currentEnemy;
+        Systems::Turn currentTurn;
 
         TextureManager textureManager;
         WindowRenderer WindowRenderer;
