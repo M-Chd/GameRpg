@@ -2,9 +2,9 @@
 
 void Core::EntityManager::spawnEnemy(Board& board,std::shared_ptr<Entities::Player> player)
 {
-    int enemyHp = playerBasedHp(player);
-    double enemyAttack = playerBasedAttack(player);
-    double enemyDefense = playerBasedDefense(player);
+    int enemyHp = this->playerBasedHp(player);
+    double enemyAttack = this->playerBasedAttack(player);
+    double enemyDefense = this->playerBasedDefense(player);
 
     auto enemy1 = std::make_shared<Entities::Enemy>(Utils::generateRandomName(),Entities::Stats(enemyHp,enemyAttack,enemyDefense),NULL);
     auto enemy2 = std::make_shared<Entities::Enemy>(Utils::generateRandomName(),Entities::Stats(enemyHp,enemyAttack,enemyDefense),NULL);
@@ -55,7 +55,7 @@ void Core::EntityManager::enemyAlgorithm(Core::Game& g)
         {
             if (Utils::calculateDistance(e,g.player) <= 5)
             {
-                e->chase();
+                e->chase(g,g.player);
 
             } else
                 e->patrol();

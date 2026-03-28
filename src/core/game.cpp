@@ -61,7 +61,7 @@ void Core::Game::run()
             }
 		}
         if (state == GameState::TITLE){
-            if (Utils::is_key_pressed(SDL_SCANCODE_SPACE)){
+            if (Systems::is_key_pressed(SDL_SCANCODE_SPACE)){
                 state = GameState::GAMEPLAY;
             }
 
@@ -89,8 +89,8 @@ void Core::Game::run()
             }
 
             for (const auto& [key, dir] : Systems::keyToDirection) {
-                if (Utils::is_key_pressed(key)) {
-                    player->move(board,dir);
+                if (Systems::is_key_pressed(key)) {
+                    player->move(*this,dir);
                 }
             }
 

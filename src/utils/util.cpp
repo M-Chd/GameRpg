@@ -22,6 +22,46 @@ Utils::Direction Utils::getRandDir()
     }
 }
 
+void Utils::HealPlayerOnItem(std::shared_ptr<Entities::Player> player, Core::Board& board, Utils::Position pos) {
+	auto entity = board.getEntityAt(pos).get();
+	auto healItem = dynamic_cast<Entities::HealItem*>(entity);
+	if (healItem) {
+		player->heal(healItem->getAmmount());
+	}
+}
+
+Utils::Position Utils::getDirection(int posX, int posY, Utils::Direction dir)
+{
+	
+    int boardsize = 19;
+
+    switch (dir)
+	{
+	case Utils::Direction::RIGHT:
+		posY += 1;
+		if (posY >= boardsize) posY = 0;
+		break;
+	case Utils::Direction::LEFT:
+		posY -= 1;
+		if (posY < 0) posY = boardsize -1;
+		break;
+	case Utils::Direction::UP:
+		posX -= 1;
+		if (posX < 0) {
+			posX = boardsize - 1;
+		}
+		break;
+	case Utils::Direction::DOWN:
+		posX += 1;
+		if (posX >= boardsize) {
+        	posX = 0;
+    	}
+	default:
+		break;
+	}
+	return { posX, posY };
+}
+
 int Utils::calculateDistance(std::shared_ptr<Entities::Enemy> e, std::shared_ptr<Entities::Player> p)
 {
     return sqrt( ( pow( (p->getPos().x - e->getPos().x), 2) + pow( (p->getPos().y - e->getPos().y), 2) ) );
@@ -32,7 +72,7 @@ std::string Utils::generateRandomName()
     return names[rand() % 8];
 }
 
-Utils::Position generateRandomPosition(Core::Board& board)
+Utils::Position Utils::generateRandomPosition(Core::Board& board)
 {
     std::random_device rd; 
     std::mt19937 eng(rd());

@@ -3,8 +3,8 @@
 #include "core/board.h"
 #include "entities/player.h"
 #include "entities/healItem.h"
-#include "utils/util.h"
 #include "core/game.h"
+#include "utils/util.h"
 
 namespace Core {
 

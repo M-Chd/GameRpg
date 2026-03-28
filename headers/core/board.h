@@ -20,30 +20,26 @@ namespace Core
         short tileSize = 32;
     };
 
-    class Board 
+    class Board
     {
-    private:
-
-        Size size;
-
     public:
-
         Board();
-        ~Board();
 
-        void setEntityAt(Utils::Position pos,std::shared_ptr<Entities::IEntity> e);
+        void setEntityAt(Utils::Position pos, std::shared_ptr<Entities::IEntity> e);
         void deleteEntityAt(Utils::Position pos);
+
+        std::shared_ptr<Entities::IEntity> getEntityAt(Utils::Position pos) const;
         Entities::EntityType getEntityTypeAt(Utils::Position pos) const;
-        std::shared_ptr<Entities::IEntity> getEntityAt(Utils::Position p);
-        const std::vector<std::shared_ptr<Entities::IEntity>>& getEntities() { return entities; };
-        std::vector<std::shared_ptr<Entities::Enemy>>& getEnemies() const;
-            
-        bool isTileWalkable(Utils::Position pos);
 
-        Size getBoardSizes() const { return size; }
-            
+        bool isTileWalkable(Utils::Position pos) const;
+
+        std::vector<std::shared_ptr<Entities::Enemy>> getEnemies() const;
+        std::vector<std::shared_ptr<Entities::IEntity>> getEntities() const;
+
+        Size getBoardSizes() const { return boardSize; }
+
     private:
+        Size boardSize;
         std::vector<std::shared_ptr<Entities::IEntity>> entities;
-
     };
-}
+};

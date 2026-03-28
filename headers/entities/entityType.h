@@ -7,6 +7,7 @@ namespace Entities {
         PLAYER,
         ENEMY,
         ITEM,
+        HEAL,
         NONE
     };
 

@@ -10,7 +10,7 @@
 #include "ui/view.h"
 #include "core/entityManager.h"
 #include "systems/inputs.h"
-#include "utils/input.h"
+#include "systems/input.h"
 
 namespace Core {
 

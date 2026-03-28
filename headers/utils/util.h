@@ -14,7 +14,9 @@ namespace Utils {
     
     Direction getRandDir();
     Position generateRandomPosition(Core::Board& board);
+    Position getDirection(int posX, int posY, Utils::Direction dir);
     std::string generateRandomName();
     int calculateDistance(std::shared_ptr<Entities::Enemy> mob,std::shared_ptr<Entities::Player> player);
     std::vector<Entities::HealItem>& getHealInBoard(Core::Board& b);
+    void HealPlayerOnItem(std::shared_ptr<Entities::Player> player, Core::Board& board, Position pos);
 }

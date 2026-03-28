@@ -2,7 +2,32 @@
 
 void UI::View::drawBoard(const Core::Game& g) const
 {
-    //TODO
+    auto& board = g.board;
+    auto renderer = g.WindowRenderer.renderer;
+
+    const int tileSize = 32;
+    const int boardSize = 19;
+
+    for (int i = 0; i < boardSize; ++i)
+    {
+        for (int j = 0; j < boardSize; ++j)
+        {
+            SDL_Rect cell = { j * tileSize, i * tileSize, tileSize, tileSize };
+            Utils::Position pos(i, j);
+
+            SDL_SetRenderDrawColor(renderer, 255, 255, 233, 255);
+            SDL_RenderFillRect(renderer, &cell);
+
+            SDL_SetRenderDrawColor(renderer, 200, 200, 200, 255);
+            SDL_RenderDrawRect(renderer, &cell);
+
+            auto entity = board.getEntityAt(pos);
+            if (entity)
+            {
+                entity->render(renderer);
+            }
+        }
+    }
 }
 
 void UI::View::draw(Core::Game& g)

@@ -2,81 +2,60 @@
 
 void Core::Board::setEntityAt(Utils::Position pos, std::shared_ptr<Entities::IEntity> e)
 {
-    if(!e) return;
-
-    if (pos.x >= 0 && pos.y < size.boardSize &&
-        pos.y >= 0 && pos.y < size.boardSize)
-    {
-        e->setPos(pos);
-        entities.push_back(e);
-    } else
-        std::cerr << "Invalid Position:  (" << pos.x << ", " << pos.y << ")" << std::endl;
-}
-
-void Core::Board::deleteEntityAt(Utils::Position p)
-{
-
-    auto it = entities.begin();
-
-    while (it != entities.end())
-    {
-        if((*it)->getPos() == p)
-        {
-            entities.erase(it);
-            break;
-        }
-        it++;
+    if (!e) {
+        deleteEntityAt(pos);
+        return;
     }
-}
 
-Entities::EntityType Core::Board::getEntityTypeAt(Utils::Position p) const
-{
-    
-    for (const auto& e : entities)
+    if (pos.x < 0 || pos.y < 0 || pos.x >= boardSize.boardSize || pos.y >= boardSize.boardSize)
     {
-        if (e->getPos() == p)
-        {
-            return e->getType();
-        }
+        std::cerr << "Invalid Position: (" << pos.x << ", " << pos.y << ")" << std::endl;
+        return;
     }
-    return Entities::EntityType::NONE;
+
+    deleteEntityAt(pos);
+
+    e->setPos(pos);
+    entities.push_back(e);
 }
 
-bool Core::Board::isTileWalkable(Utils::Position p)
+void Core::Board::deleteEntityAt(Utils::Position pos)
 {
-
-    auto type = getEntityTypeAt(p);
-
-    if (type != Entities::EntityType::NONE &&
-        type != Entities::EntityType::PLAYER)
-    {
-        return false;
-    }
-    return true;
+    entities.erase(
+        std::remove_if(entities.begin(), entities.end(),
+                       [&](const std::shared_ptr<Entities::IEntity>& e) {
+                           return e->getPos() == pos;
+                       }),
+        entities.end());
 }
 
-std::shared_ptr<Entities::IEntity> Core::Board::getEntityAt(Utils::Position p)
+std::shared_ptr<Entities::IEntity> Core::Board::getEntityAt(Utils::Position pos) const
 {
-    for (const auto& e : entities)
-    {
-        if (e->getPos() == p)
-        {
+    for (auto& e : entities)
+        if (e->getPos() == pos)
             return e;
-        }
-    }
     return nullptr;
 }
 
-std::vector<std::shared_ptr<Entities::Enemy>>& Core::Board::getEnemies() const{
+Entities::EntityType Core::Board::getEntityTypeAt(Utils::Position pos) const
+{
+    auto e = getEntityAt(pos);
+    return e ? e->getType() : Entities::EntityType::NONE;
+}
 
+bool Core::Board::isTileWalkable(Utils::Position pos) const
+{
+    auto type = getEntityTypeAt(pos);
+    return type == Entities::EntityType::NONE || type == Entities::EntityType::PLAYER;
+}
+
+std::vector<std::shared_ptr<Entities::Enemy>> Core::Board::getEnemies() const
+{
     std::vector<std::shared_ptr<Entities::Enemy>> enemies;
-    
-    for (const auto& e : entities)
+    for (auto& e : entities)
     {
         if (e->getType() == Entities::EntityType::ENEMY)
-        {
-            enemies.emplace_back(e);
-        }
+            enemies.push_back(std::dynamic_pointer_cast<Entities::Enemy>(e));
     }
     return enemies;
 }

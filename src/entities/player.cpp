@@ -65,14 +65,51 @@ bool Entities::Player::run(const int rand1, const int rand2)
     }
 }
 
-void Entities::Player::update()
+void Entities::Player::move(Core::Game& game, Utils::Direction dir)
 {
+    auto currentPos = this->pos;
+    auto targetPos = Utils::getDirection(currentPos.x, currentPos.y, dir);
+    auto& board = game.board;
 
+    if (!board.isTileWalkable(targetPos)) return;
+
+    auto targetEntity = board.getEntityAt(targetPos);
+
+    if (!targetEntity) {
+        board.setEntityAt(targetPos, shared_from_this());
+        board.deleteEntityAt(currentPos);
+        setPos(targetPos);
+        return;
+    }
+
+    switch (targetEntity->getType()) {
+        case Entities::EntityType::ITEM:
+            collect(board, targetPos);
+            break;
+
+        case Entities::EntityType::HEAL:
+            Utils::HealPlayerOnItem(shared_from_this(), board, targetPos);
+            break;
+
+        case Entities::EntityType::ENEMY: {
+            auto mob = std::dynamic_pointer_cast<Entities::Enemy>(targetEntity);
+            Systems::StartFight(game, mob);
+            break;
+        }
+        default:
+            break;
+    }
 }
 
-void Entities::Player::render(SDL_Renderer* renderer)
+double Entities::Player::damageWithProtect(int amount)
 {
+    if (!isPlayerProtecting()){
+        return 0;
+    }
+    double damageReductionFactor = 0.5; // 50% of shield protection
+    double newAttackAmount = amount * damageReductionFactor;
 
+    return newAttackAmount;
 }
 
 std::shared_ptr<Entities::Enemy> Entities::Player::getNearEnemy(Core::Board& b)

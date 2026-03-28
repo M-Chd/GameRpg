@@ -12,9 +12,11 @@ namespace Entities {
 
         const float getDamage() { return damage; }
         const Utils::Position& getPos() override { return pos; }
-        void setPos(Utils::Position) override;
+        void setPos(Utils::Position pos) override { this->pos = pos; }
         const std::string& getName() override { return name; };
         const EntityType getType()override{ return type; };
+
+        void render(const Core::Game& g) override;
 
     private:
         float damage;

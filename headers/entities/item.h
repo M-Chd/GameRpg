@@ -16,12 +16,10 @@ namespace Entities{
         };
 
         const Utils::Position& getPos() override { return pos; }
-        void setPos(Utils::Position) override;
+        void setPos(Utils::Position pos) override { this->pos = pos; }
         const std::string& getName() override { return name; };
         const EntityType getType()override{ return type; };
 
-        void update();
-        void render(SDL_Renderer* renderer);
-
+        void render(const Core::Game& g) override;
     };
 }
