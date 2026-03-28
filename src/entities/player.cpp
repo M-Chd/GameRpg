@@ -21,7 +21,7 @@ void Entities::Player::heal(int amount)
     this->stats.healthPoint += amount;
 }
 
-void Entities::Player::collect(Core::Board& b, Utils::Position pos)
+void Entities::Player::collect(std::unique_ptr<Core::Board>  board, Utils::Position pos)
 {
     auto item = b.getEntityAt(pos);
     if (!item) {
@@ -34,7 +34,7 @@ void Entities::Player::collect(Core::Board& b, Utils::Position pos)
         return;
     }
     inventory.addItem(itemPtr);
-    b.setEntityAt(pos, nullptr);
+    b->setEntityAt(pos, nullptr);
     
     std::cout << "Item " << itemPtr->getName() << " collected" << std::endl;
 }
@@ -71,13 +71,13 @@ void Entities::Player::move(Core::Game& game, Utils::Direction dir)
     auto targetPos = Utils::getDirection(currentPos.x, currentPos.y, dir);
     auto& board = game.board;
 
-    if (!board.isTileWalkable(targetPos)) return;
+    if (!board->isTileWalkable(targetPos)) return;
 
-    auto targetEntity = board.getEntityAt(targetPos);
+    auto targetEntity = board->getEntityAt(targetPos);
 
     if (!targetEntity) {
-        board.setEntityAt(targetPos, shared_from_this());
-        board.deleteEntityAt(currentPos);
+        board->setEntityAt(targetPos, shared_from_this());
+        board->deleteEntityAt(currentPos);
         setPos(targetPos);
         return;
     }
@@ -127,14 +127,14 @@ double Entities::Player::damageWithProtect(int amount)
     return newAttackAmount;
 }
 
-std::shared_ptr<Entities::Enemy> Entities::Player::getNearEnemy(Core::Board& b)
+std::shared_ptr<Entities::Enemy> Entities::Player::getNearEnemy(std::unique_ptr<Board> b)
 {
     auto playerPos = pos;
 
 	for (int x = playerPos.x - 2; x <= playerPos.x + 2; ++x) {
 		for (int y = playerPos.y - 2; y <= playerPos.y + 2; ++y) {
-			if (x >= 0 && x < b.getBoardSizes().boardSize && y >= 0 && y < b.getBoardSizes().boardSize) {
-				auto enemy = b.getEntityAt({x,y});
+			if (x >= 0 && x < b->getBoardSizes().boardSize && y >= 0 && y < b.getBoardSizes().boardSize) {
+				auto enemy = b->getEntityAt({x,y});
 				if (enemy && enemy->getType() == EntityType::ENEMY) {
 					return std::make_shared<Entities::Enemy>(enemy);
 				}

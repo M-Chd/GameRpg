@@ -15,6 +15,9 @@
 
 namespace Core {
 
+    class Board;
+    struct EntityManager;
+
     struct Game
     {
         std::unique_ptr<Board> board;
@@ -22,7 +25,7 @@ namespace Core {
 
         TextureManager textureManager;
         WindowRenderer WindowRenderer;
-        EntityManager entityManager;
+        EntityManager* entityManager;
 
         UI::View view;
 

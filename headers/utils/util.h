@@ -24,10 +24,10 @@ namespace Utils {
     static const std::string names[8] = {"Miku","Teto","Neru","Dante","Rosalina","Borat","GojoTurk","Bunbun"};
     
     Direction getRandDir();
-    Position generateRandomPosition(Core::Board& board);
+    Position generateRandomPosition(std::unique_ptr<Core::Board> board);
     Position getDirection(int posX, int posY, Utils::Direction dir);
     std::string generateRandomName();
     int calculateDistance(std::shared_ptr<Entities::Enemy> mob,std::shared_ptr<Entities::Player> player);
-    std::vector<Entities::HealItem>& getHealInBoard(Core::Board& b);
-    void HealPlayerOnItem(std::shared_ptr<Entities::Player> player, Core::Board& board, Position pos);
+    std::vector<Entities::HealItem>& getHealInBoard(std::unique_ptr<Core::Board> board);
+    void HealPlayerOnItem(std::shared_ptr<Entities::Player> player,std::unique_ptr<Core::Board> board, Position pos);
 }

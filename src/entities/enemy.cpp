@@ -79,9 +79,9 @@ void Entities::Enemy::move(Core::Game& game,Utils::Direction dir)
 
     auto& board = game.board;
 
-    if (!board.isTileWalkable(targetPos)) return;
+    if (!board->isTileWalkable(targetPos)) return;
 
-    auto targetEntity = board.getEntityAt(targetPos);
+    auto targetEntity = board->getEntityAt(targetPos);
 
     if (targetEntity && targetEntity->getType() == Entities::EntityType::PLAYER)
     {
@@ -91,8 +91,8 @@ void Entities::Enemy::move(Core::Game& game,Utils::Direction dir)
         return;
     }
 
-    board.setEntityAt(targetPos, shared_from_this());
-    board.deleteEntityAt(currentPos);
+    board->setEntityAt(targetPos, shared_from_this());
+    board->deleteEntityAt(currentPos);
     setPos(targetPos);
 }
 

@@ -1,18 +1,20 @@
 #include "core/entityManager.h"
 
-void Core::EntityManager::spawnEnemy(std::unique_ptr<Board> board,std::shared_ptr<Entities::Player> player)
+void Core::EntityManager::spawnEnemy(Core::Board& board,std::shared_ptr<Entities::Player> player)
 {
     int enemyHp = this->playerBasedHp(player);
     double enemyAttack = this->playerBasedAttack(player);
     double enemyDefense = this->playerBasedDefense(player);
 
-    auto enemy1 = std::make_shared<Entities::Enemy>(Utils::generateRandomName(),Entities::Stats(enemyHp,enemyAttack,enemyDefense),NULL);
-    auto enemy2 = std::make_shared<Entities::Enemy>(Utils::generateRandomName(),Entities::Stats(enemyHp,enemyAttack,enemyDefense),NULL);
-    auto enemy3 = std::make_shared<Entities::Enemy>(Utils::generateRandomName(),Entities::Stats(enemyHp,enemyAttack,enemyDefense),NULL);
+    Utils::Position defaultPos = {0,0}; 
 
-    board->setEntityAt(Utils::generateRandomPosition(*board), enemy1);
-    board->setEntityAt(Utils::generateRandomPosition(*board), enemy2);
-    board->setEntityAt(Utils::generateRandomPosition(*board), enemy3);
+    auto enemy1 = std::make_shared<Entities::Enemy>(Utils::generateRandomName(),Entities::Stats(enemyHp,enemyAttack,enemyDefense),defaultPos);
+    auto enemy2 = std::make_shared<Entities::Enemy>(Utils::generateRandomName(),Entities::Stats(enemyHp,enemyAttack,enemyDefense),defaultPos);
+    auto enemy3 = std::make_shared<Entities::Enemy>(Utils::generateRandomName(),Entities::Stats(enemyHp,enemyAttack,enemyDefense),defaultPos);
+
+    board.setEntityAt(Utils::generateRandomPosition(board), enemy1);
+    board.setEntityAt(Utils::generateRandomPosition(board), enemy2);
+    board.setEntityAt(Utils::generateRandomPosition(board), enemy3);
 
 }
 
@@ -20,27 +22,27 @@ void Core::EntityManager::initEntities(Core::Game& g)
 {
     int boardSize = 19;
 
-    g.player = std::make_unique<Entities::Player>(Utils::Position{0,0});
-    *g.board.setEntityAt({boardSize/2,boardSize/2},g.player);
+    g.player = std::make_shared<Entities::Player>(Utils::Position{0,0});
+    g.board->setEntityAt({boardSize/2,boardSize/2},g.player);
 
-    auto sword = std::make_shared<Entities::SwordItem>("Sword",5,NULL);
-    Utils::Position randomPos = Utils::generateRandomPosition(g.board);
-    *g.board.setEntityAt(Utils::Position{randomPos.x,randomPos.y},sword);
+    auto sword = std::make_shared<Entities::SwordItem>("Sword",5,Utils::Position{0,0});
+    Utils::Position randomPos = Utils::generateRandomPosition(*g.board);
+    g.board->setEntityAt(Utils::Position{randomPos.x,randomPos.y},sword);
 
     spawnEnemy(*g.board,g.player);
     spawnHeal(*g.board,g.player);
 }
 
-void Core::EntityManager::spawnHeal(std::unique_ptr<Board> board,std::shared_ptr<Entities::Player> player)
+void Core::EntityManager::spawnHeal(Core::Board& board,std::shared_ptr<Entities::Player> player)
 {
 
-    if(Utils::getHealInBoard(*board).empty()){
+    if(Utils::getHealInBoard(board).empty()){
         int playerHp = player->getStats().healthPoint;
         int playerMaxHp = player->getStats().maxHp;
     
         if (playerHp <= playerMaxHp/2){
             double amount = playerBasedHealAmmount(player);
-            auto potionHeal = std::make_shared<Entities::HealItem>("Heal", amount, NULL);
+            auto potionHeal = std::make_shared<Entities::HealItem>("Heal", amount, Utils::Position{0,0});
             board.setEntityAt(Utils::generateRandomPosition(board),potionHeal);
         }
     }
@@ -48,7 +50,7 @@ void Core::EntityManager::spawnHeal(std::unique_ptr<Board> board,std::shared_ptr
 
 void Core::EntityManager::enemyAlgorithm(Core::Game& g)
 {
-    auto enemyList = *g.board.getEnemies();
+    auto enemyList = g.board->getEnemies();
 
     if(!enemyList.empty()){
         for (const auto& e : enemyList)
@@ -58,7 +60,7 @@ void Core::EntityManager::enemyAlgorithm(Core::Game& g)
                 e->chase(g,g.player);
 
             } else
-                e->patrol();
+                e->patrol(g);
         }
     }
 }

@@ -12,10 +12,10 @@ void Core::Game::initGame()
     textureManager.load("sword", "assets/images/minecraft_sword.jpg");
     textureManager.load("bow", "assets/images/Minecraft_bow.jpg");
     textureManager.load("heal", "assets/images/Heal_potion.png");
+    
+    board = std::make_unique<Board>();
 
     entityManager.initEntities(*this);
-
-    board = std::make_unique<Board>();
 
 }
 

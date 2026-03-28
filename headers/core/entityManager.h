@@ -3,10 +3,11 @@
 #include "core/board.h"
 #include "entities/player.h"
 #include "entities/healItem.h"
-#include "core/game.h"
 #include "utils/util.h"
 
 namespace Core {
+
+    struct Game;
 
     struct EntityManager
     {
@@ -16,8 +17,8 @@ namespace Core {
         double playerBasedDefense(std::shared_ptr<Entities::Player> player);
         double playerBasedHealAmmount(std::shared_ptr<Entities::Player> player);
     public:
-        void spawnEnemy(Board& board,std::shared_ptr<Entities::Player> player);
-        void spawnHeal(Board& board,std::shared_ptr<Entities::Player> player);
+        void spawnEnemy(Core::Board& board,std::shared_ptr<Entities::Player> player);
+        void spawnHeal(Core::Board& board,std::shared_ptr<Entities::Player> player);
         void enemyAlgorithm(Core::Game& g);
         void initEntities(Core::Game& g);
     };

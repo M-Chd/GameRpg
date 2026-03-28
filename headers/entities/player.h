@@ -20,13 +20,17 @@ namespace Entities{
     {
     public:
         
-        Player(Utils::Position _pos, Stats _stats) : stats(_stats)
+        Player(Utils::Position _pos) 
+        : stats(10, 3, 2)
         {
-            this->stats.healthPoint = 10;
+            this->stats.xp = 0;
+            this->stats.level = 1;
+            this->stats.maxHp = 10;
+    
             type = EntityType::PLAYER;
             name = "Player";
             pos = _pos;
-        };
+        }
 
         const Systems::Inventory& getInventory() { return inventory; };
         Stats& getStats() { return stats; };
@@ -46,8 +50,8 @@ namespace Entities{
 
         void move(Core::Game& g,Utils::Direction dir);
         bool run(const int rand1,const int rand2);
-        void collect(Core::Board& b, Utils::Position pos);
-        std::shared_ptr<Enemy> getNearEnemy(Core::Board& b);
+        void collect(std::unique_ptr<Core::Board> board, Utils::Position pos);
+        std::shared_ptr<Enemy> getNearEnemy(std::unique_ptr<Core::Board> board);
 
     private:
         Stats stats;

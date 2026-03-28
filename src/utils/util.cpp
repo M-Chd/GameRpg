@@ -22,8 +22,8 @@ Utils::Direction Utils::getRandDir()
     }
 }
 
-void Utils::HealPlayerOnItem(std::shared_ptr<Entities::Player> player, Core::Board& board, Utils::Position pos) {
-	auto entity = board.getEntityAt(pos).get();
+void Utils::HealPlayerOnItem(std::shared_ptr<Entities::Player> player, std::unique_ptr<Core::Board> board, Utils::Position pos) {
+	auto entity = board->getEntityAt(pos).get();
 	auto healItem = dynamic_cast<Entities::HealItem*>(entity);
 	if (healItem) {
 		player->heal(healItem->getAmmount());
