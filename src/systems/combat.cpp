@@ -45,6 +45,7 @@ void Systems::handlePlayerTurn(Core::Game &game,
                 {
                     std::cout << "Player tried to run..." << std::endl;
                     isCombatOver = true;
+                    game.board->deleteEntityAt(enemy->getPos());
                 }
                 else
                 {

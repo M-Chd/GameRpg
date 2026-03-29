@@ -3,9 +3,7 @@
 
 void Entities::Enemy::setHp(const int amount)
 {
-    if (amount < 0) return;
-
-    stats.healthPoint = amount;
+    stats.healthPoint = (amount < 0) ? 0 : amount;
 }
 
 void Entities::Enemy::render(const Core::Game& g)
@@ -47,18 +45,15 @@ void Entities::Enemy::chase(Core::Game& g,std::shared_ptr<Entities::Player> p)
     auto e_pos = pos;
     auto playerPos = p->getPos();
     
-    if (e_pos.x < playerPos.x){
-        move(g,Utils::Direction::DOWN);
-    }
-    else if (e_pos.y < playerPos.y){
-        move(g,Utils::Direction::RIGHT);
-    }
-    else if (e_pos.x > playerPos.x){
-        move(g,Utils::Direction::UP);
-    }
-    else if (e_pos.y > playerPos.y){
-        move(g,Utils::Direction::LEFT);
-    }
+    if (e_pos.x < playerPos.x)
+        move(g, Utils::Direction::DOWN);
+    else if (e_pos.x > playerPos.x)
+        move(g, Utils::Direction::UP);
+
+    if (e_pos.y < playerPos.y)
+        move(g, Utils::Direction::RIGHT);
+    else if (e_pos.y > playerPos.y)
+        move(g, Utils::Direction::LEFT);
 }
 
 void Entities::Enemy::patrol(Core::Game& g)
@@ -76,7 +71,6 @@ void Entities::Enemy::move(Core::Game& game,Utils::Direction dir)
 {
     auto currentPos = this->pos;
     auto targetPos = Utils::getDirection(currentPos.x,currentPos.y,dir);
-
     auto& board = game.board;
 
     if (!board->isTileWalkable(targetPos)) return;
@@ -85,9 +79,7 @@ void Entities::Enemy::move(Core::Game& game,Utils::Direction dir)
 
     if (targetEntity && targetEntity->getType() == Entities::EntityType::PLAYER)
     {
-        auto player = std::dynamic_pointer_cast<Entities::Player>(targetEntity);
         Systems::StartFight(game, shared_from_this());
-        board->deleteEntityAt(currentPos);
         return;
     }
 

@@ -9,7 +9,9 @@ namespace Entities {
     {
     public:
         SwordItem(const std::string& _name,float _damage,Utils::Position _pos) : Item(_name,_pos),damage(_damage)
-        {};
+        {
+            type = EntityType::ITEM;
+        };
 
         const float getDamage() { return damage; }
         const Utils::Position& getPos() override { return pos; }

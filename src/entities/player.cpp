@@ -23,20 +23,17 @@ void Entities::Player::heal(int amount)
 
 void Entities::Player::collect(Core::Board&  b, Utils::Position pos)
 {
-    auto item = b.getEntityAt(pos);
+    auto item = std::dynamic_pointer_cast<Entities::Item>(b.getEntityAt(pos));
+    if (!item) return;
+
     if (!item) {
-        std::cerr << "No entity in this position" << std::endl;
-        return;
-    }
-    auto itemPtr = std::dynamic_pointer_cast<Entities::Item>(item);
-    if (!itemPtr) {
         std::cerr << "Entity is not an Item" << std::endl;
         return;
     }
-    inventory.addItem(itemPtr);
-    b.setEntityAt(pos, nullptr);
+    inventory.addItem(item);
+    b.deleteEntityAt(pos);
     
-    std::cout << "Item " << itemPtr->getName() << " collected" << std::endl;
+    std::cout << "Item " << item->getName() << " collected" << std::endl;
 }
 
 bool Entities::Player::run(const int rand1, const int rand2)
@@ -82,13 +79,20 @@ void Entities::Player::move(Core::Game& game, Utils::Direction dir)
         return;
     }
 
-    switch (targetEntity->getType()) {
+    switch (targetEntity->getType())
+    {
         case Entities::EntityType::ITEM:
             collect(*board, targetPos);
+            board->setEntityAt(targetPos, shared_from_this());
+            board->deleteEntityAt(currentPos);
+            setPos(targetPos);
             break;
 
         case Entities::EntityType::HEAL:
             Utils::HealPlayerOnItem(shared_from_this(), *board, targetPos);
+            board->setEntityAt(targetPos, shared_from_this());
+            board->deleteEntityAt(currentPos);
+            setPos(targetPos);
             break;
 
         case Entities::EntityType::ENEMY: {

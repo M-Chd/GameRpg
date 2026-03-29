@@ -53,14 +53,19 @@ void Core::EntityManager::enemyAlgorithm(Core::Game& g)
     auto enemyList = g.board->getEnemies();
 
     if(!enemyList.empty()){
+        Uint32 currentTime = SDL_GetTicks();
+
         for (const auto& e : enemyList)
         {
-            if (Utils::calculateDistance(e,g.player) <= 5)
+            if (currentTime - e->lastMoveTime > 200)
             {
-                e->chase(g,g.player);
+                if (Utils::calculateDistance(e,g.player) <= 5)
+                    e->chase(g,g.player);
+                else
+                    e->patrol(g);
 
-            } else
-                e->patrol(g);
+                e->lastMoveTime = currentTime;
+            }
         }
     }
 }

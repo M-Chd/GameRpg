@@ -46,24 +46,21 @@ void Core::Game::handleEvents(bool& running)
     SDL_Event e;
     while (SDL_PollEvent(&e))
     {
-        if (e.type == SDL_QUIT)
-        {
-            running = false;
-            return;
-        }
+        if (e.type == SDL_QUIT) { running = false; return; }
 
         if (e.type == SDL_KEYDOWN)
         {
-            SDL_Scancode key;
+            GameState currentState = state;
 
-            switch (state)
+            switch (currentState)
             {
                 case GameState::TITLE:
-                    if (Systems::is_key_pressed(SDL_SCANCODE_SPACE)) state = GameState::GAMEPLAY;
+                    if (Systems::is_key_pressed(SDL_SCANCODE_SPACE))
+                        state = GameState::GAMEPLAY;
                     break;
 
                 case GameState::GAMEPLAY:
-                    if (Systems::is_key_pressed(SDL_SCANCODE_W)) player->move(*this, Utils::Direction::UP);
+                    if      (Systems::is_key_pressed(SDL_SCANCODE_W)) player->move(*this, Utils::Direction::UP);
                     else if (Systems::is_key_pressed(SDL_SCANCODE_S)) player->move(*this, Utils::Direction::DOWN);
                     else if (Systems::is_key_pressed(SDL_SCANCODE_A)) player->move(*this, Utils::Direction::LEFT);
                     else if (Systems::is_key_pressed(SDL_SCANCODE_D)) player->move(*this, Utils::Direction::RIGHT);
@@ -71,7 +68,8 @@ void Core::Game::handleEvents(bool& running)
                     break;
 
                 case GameState::FIGHT:
-                    Systems::handlePlayerTurn(*this, currentTurn, currentEnemy, selectedIndex, inventorySelected, isCombatOver);
+                    Systems::handlePlayerTurn(*this, currentTurn, currentEnemy,
+                                              selectedIndex, inventorySelected, isCombatOver);
                     break;
 
                 case GameState::PAUSE:
@@ -112,17 +110,11 @@ void Core::Game::update(bool& running)
     }
     else if (state == GameState::FIGHT)
     {
-        if (!enemyTurnPending) {
-            currentEnemy->attack(player);
-            enemyTurnStartTime = SDL_GetTicks();
-            enemyTurnPending = true;
-        }
-
-        if (SDL_GetTicks() - enemyTurnStartTime >= 1000) {
+        if (currentTurn == Systems::Turn::ENEMY && !isCombatOver)
+        {
+            Systems::handleMobTurn(*this, currentEnemy);
             currentTurn = Systems::Turn::PLAYER;
-            enemyTurnPending = false;
         }
-        return;
 
         if (isCombatOver || currentEnemy->getStats().healthPoint <= 0)
         {

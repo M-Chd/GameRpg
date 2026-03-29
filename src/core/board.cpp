@@ -47,7 +47,8 @@ Entities::EntityType Core::Board::getEntityTypeAt(Utils::Position pos) const
 bool Core::Board::isTileWalkable(Utils::Position pos) const
 {
     auto type = getEntityTypeAt(pos);
-    return type == Entities::EntityType::PLAYER;
+    return type == Entities::EntityType::NONE || type == Entities::EntityType::PLAYER
+    || type == Entities::EntityType::HEAL || type == Entities::EntityType::ITEM;
 }
 
 std::vector<std::shared_ptr<Entities::Enemy>> Core::Board::getEnemies() const

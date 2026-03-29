@@ -40,7 +40,7 @@ namespace Core {
 
         GameState state = GameState::TITLE;
         Uint32 lastEnemyUpdate = 0;
-        const Uint32 enemyUpdateInterval = 800;
+        const Uint32 enemyUpdateInterval = 100;
 
         void initGame();
         void run();
