@@ -2,10 +2,10 @@
 	"artifacts" : 
 	[
 		{
-			"path" : "GameRpg.exe"
+			"path" : "RelWithDebInfo/GameRpg.exe"
 		},
 		{
-			"path" : "GameRpg.pdb"
+			"path" : "RelWithDebInfo/GameRpg.pdb"
 		}
 	],
 	"backtrace" : 1,
@@ -64,7 +64,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-std=gnu++20"
+					"fragment" : "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MD /Zi /O2 /Ob1 /DNDEBUG -std=gnu++20"
 				}
 			],
 			"includes" : 
@@ -108,14 +108,28 @@
 			]
 		}
 	],
+	"dependencies" : 
+	[
+		{
+			"id" : "ZERO_CHECK::@6890427a1f51a3e7e1df"
+		}
+	],
 	"id" : "GameRpg::@6890427a1f51a3e7e1df",
 	"link" : 
 	{
 		"commandFragments" : 
 		[
 			{
+				"fragment" : "/DWIN32 /D_WINDOWS /W3 /GR /EHsc /MD /Zi /O2 /Ob1 /DNDEBUG",
+				"role" : "flags"
+			},
+			{
+				"fragment" : "/machine:x64 /debug /INCREMENTAL",
+				"role" : "flags"
+			},
+			{
 				"backtrace" : 2,
-				"fragment" : "-LC:/Users/mouad/Desktop/GameRpg/lib",
+				"fragment" : "-LC:\\Users\\mouad\\Desktop\\GameRpg\\lib",
 				"role" : "libraryPath"
 			},
 			{
@@ -139,7 +153,7 @@
 				"role" : "libraries"
 			},
 			{
-				"fragment" : "-lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32",
+				"fragment" : "kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib",
 				"role" : "libraries"
 			}
 		],

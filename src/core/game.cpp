@@ -105,22 +105,24 @@ void Core::Game::update(bool& running)
             lastEnemyUpdate = currentTime;
         }
 
-        /*
         if (board->getEnemies().empty())
-        {
             entityManager->spawnEnemy(*board, player);
-        }
-        */
 
         entityManager->spawnHeal(*board, player);
     }
     else if (state == GameState::FIGHT)
     {
-        if (currentTurn == Systems::Turn::ENEMY && !isCombatOver)
-        {
-            Systems::handleMobTurn(*this, currentEnemy);
-            currentTurn = Systems::Turn::PLAYER;
+        if (!enemyTurnPending) {
+            currentEnemy->attack(player);
+            enemyTurnStartTime = SDL_GetTicks();
+            enemyTurnPending = true;
         }
+
+        if (SDL_GetTicks() - enemyTurnStartTime >= 1000) {
+            currentTurn = Systems::Turn::PLAYER;
+            enemyTurnPending = false;
+        }
+        return;
 
         if (isCombatOver || currentEnemy->getStats().healthPoint <= 0)
         {

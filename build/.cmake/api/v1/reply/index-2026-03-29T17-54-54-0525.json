@@ -3,8 +3,9 @@
 	{
 		"generator" : 
 		{
-			"multiConfig" : false,
-			"name" : "Unix Makefiles"
+			"multiConfig" : true,
+			"name" : "Visual Studio 17 2022",
+			"platform" : "x64"
 		},
 		"paths" : 
 		{
@@ -26,7 +27,7 @@
 	"objects" : 
 	[
 		{
-			"jsonFile" : "codemodel-v2-c741593fe1029c35e89e.json",
+			"jsonFile" : "codemodel-v2-270d4fd10b82ee5a12de.json",
 			"kind" : "codemodel",
 			"version" : 
 			{
@@ -35,7 +36,7 @@
 			}
 		},
 		{
-			"jsonFile" : "cache-v2-c04e1bbf52700e52aabc.json",
+			"jsonFile" : "cache-v2-7af49c6ed0a512cff627.json",
 			"kind" : "cache",
 			"version" : 
 			{
@@ -90,7 +91,7 @@
 				"responses" : 
 				[
 					{
-						"jsonFile" : "cache-v2-c04e1bbf52700e52aabc.json",
+						"jsonFile" : "cache-v2-7af49c6ed0a512cff627.json",
 						"kind" : "cache",
 						"version" : 
 						{
@@ -99,7 +100,7 @@
 						}
 					},
 					{
-						"jsonFile" : "codemodel-v2-c741593fe1029c35e89e.json",
+						"jsonFile" : "codemodel-v2-270d4fd10b82ee5a12de.json",
 						"kind" : "codemodel",
 						"version" : 
 						{

@@ -23,6 +23,7 @@ namespace Entities
 namespace Utils {
 
     static const std::string names[8] = {"Miku","Teto","Neru","Dante","Rosalina","Borat","GojoTurk","Bunbun"};
+    static const std::vector<std::string> options = {"Attack", "Protect", "Inventory", "Run"};
     
     Direction getRandDir();
     Position generateRandomPosition(Core::Board& board);

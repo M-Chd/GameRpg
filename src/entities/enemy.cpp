@@ -50,13 +50,13 @@ void Entities::Enemy::chase(Core::Game& g,std::shared_ptr<Entities::Player> p)
     if (e_pos.x < playerPos.x){
         move(g,Utils::Direction::DOWN);
     }
-    if (e_pos.y < playerPos.y){
+    else if (e_pos.y < playerPos.y){
         move(g,Utils::Direction::RIGHT);
     }
-    if (e_pos.x > playerPos.x){
+    else if (e_pos.x > playerPos.x){
         move(g,Utils::Direction::UP);
     }
-    if (e_pos.y > playerPos.y){
+    else if (e_pos.y > playerPos.y){
         move(g,Utils::Direction::LEFT);
     }
 }

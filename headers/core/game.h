@@ -29,6 +29,8 @@ namespace Core {
         int selectedIndex = 0;
         bool inventorySelected = false;
         bool isCombatOver = false;
+        Uint32 enemyTurnStartTime = 0;
+        bool enemyTurnPending = false;
 
         TextureManager textureManager;
         WindowRenderer WindowRenderer;

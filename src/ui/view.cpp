@@ -152,7 +152,7 @@ void UI::View::drawInfo(const Core::Game& g) const
     short boardSize = 19;
     short BoardTileSize = 32;
 
-    const int boardPixelsize = boardSize * boardPixelsize;
+    const int boardPixelsize = boardSize * BoardTileSize;
 
     SDL_Rect infoBox = {
         boardPixelsize, 0,
@@ -174,8 +174,8 @@ void UI::View::getItemInventory(Core::Game& g)
             renderText(g,"> " + i->getName(),0 + space,500,{255,255,255});
             space += 100;
         }
-    }
-    renderText(g,"- Inventory is empty",50,500,{255,255,255});
+    } else 
+        renderText(g,"- Inventory is empty",50,500,{255,255,255});
 }
 
 void UI::View::renderPlayerInfo(Core::Game& g)
